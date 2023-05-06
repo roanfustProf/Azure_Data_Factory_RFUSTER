@@ -1,0 +1,17 @@
+{
+	"name": "DestinationDataset_yjg",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Eje01_AzureBlobStorage1_Origen",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "sampledata"
+			}
+		}
+	}
+}
