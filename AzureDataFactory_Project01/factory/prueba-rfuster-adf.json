@@ -1,0 +1,9 @@
+{
+	"name": "prueba-rfuster-adf",
+	"location": "brazilsouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "dc3d7825-fd0a-4889-8ef1-9b9ad58c702f",
+		"tenantId": "4d990d65-6d55-4a8b-9cb6-0728fbc05ee3"
+	}
+}
