@@ -1,0 +1,9 @@
+{
+	"name": "Project01rfusteradf",
+	"location": "brazilsouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "8e04ca9b-7dae-437f-bca9-8c7bb1fe89b1",
+		"tenantId": "4d990d65-6d55-4a8b-9cb6-0728fbc05ee3"
+	}
+}
