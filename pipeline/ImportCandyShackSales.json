@@ -20,7 +20,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "CandyShack",
+							"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/CandyShack",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
