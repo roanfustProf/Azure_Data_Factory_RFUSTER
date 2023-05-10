@@ -16,27 +16,22 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "JsonSource",
+						"type": "ParquetSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/HandyCandy",
-							"wildcardFileName": "*.json",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
-							"type": "JsonReadSettings"
+							"type": "ParquetReadSettings"
 						}
 					},
 					"sink": {
-						"type": "ParquetSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
-							"copyBehavior": "MergeFiles"
-						},
-						"formatSettings": {
-							"type": "ParquetWriteSettings"
-						}
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE dbo.Sales_LOAD",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -44,62 +39,59 @@
 						"mappings": [
 							{
 								"source": {
-									"path": "['Product']"
+									"name": "TransactionDate",
+									"type": "DateTime",
+									"physicalType": "INT96"
+								},
+								"sink": {
+									"name": "SalesMonth",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "Product",
+									"type": "String",
+									"physicalType": "UTF8"
 								},
 								"sink": {
 									"name": "Product",
-									"type": "String"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
 								"source": {
-									"path": "['Price']"
-								},
-								"sink": {
 									"name": "Price",
-									"type": "Single"
-								}
-							},
-							{
-								"source": {
-									"path": "$['TransactionId']"
+									"type": "Single",
+									"physicalType": "FLOAT"
 								},
 								"sink": {
-									"name": "TransactionId",
-									"type": "Guid"
-								}
-							},
-							{
-								"source": {
-									"path": "$['TransactionDate']"
-								},
-								"sink": {
-									"name": "TransactionDate",
-									"type": "DateTime"
-								}
-							},
-							{
-								"source": {
-									"path": "$['StoreId']"
-								},
-								"sink": {
-									"name": "StoreId",
-									"type": "Int16"
+									"name": "SalesValueUSD",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
 								}
 							}
 						],
-						"collectionReference": "$['Items']"
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
 					}
 				},
 				"inputs": [
 					{
-						"referenceName": "ABS_JSON_HandyCandy",
+						"referenceName": "ABS_PAR_HandyCandy",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "ABS_PAR_HandyCandy",
+						"referenceName": "ASQL_dboSalesLoad",
 						"type": "DatasetReference"
 					}
 				]
