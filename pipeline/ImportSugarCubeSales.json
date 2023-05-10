@@ -20,7 +20,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "SugarCube ",
+							"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SugarCube",
 							"wildcardFileName": "*.json",
 							"enablePartitionDiscovery": false
 						},
