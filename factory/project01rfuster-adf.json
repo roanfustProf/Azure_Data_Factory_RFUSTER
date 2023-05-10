@@ -1,0 +1,9 @@
+{
+	"name": "project01rfuster-adf",
+	"location": "brazilsouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "59e043d3-fb06-41d7-8be2-1c73a9401f39",
+		"tenantId": "4d990d65-6d55-4a8b-9cb6-0728fbc05ee3"
+	}
+}
