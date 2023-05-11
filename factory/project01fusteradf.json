@@ -1,0 +1,9 @@
+{
+	"name": "project01fusteradf",
+	"location": "brazilsouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "1b2c9e3e-21b2-4a5d-afd8-475faea7845f",
+		"tenantId": "4d990d65-6d55-4a8b-9cb6-0728fbc05ee3"
+	}
+}
