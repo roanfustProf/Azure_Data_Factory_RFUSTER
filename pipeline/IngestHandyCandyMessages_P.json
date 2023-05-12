@@ -1,6 +1,64 @@
 {
 	"name": "IngestHandyCandyMessages_P",
 	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/HandyCandy",
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings",
+							"copyBehavior": "MergeFiles"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ABS_JSON",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": " sampledata",
+							"Directory": ".",
+							"File": "."
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ABS_PAR_HandyCandy",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
 		"folder": {
 			"name": "Chapter_05"
 		},
