@@ -1,0 +1,17 @@
+{
+	"name": "AzureBlobStorage_project01rfuster_kv",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault_project01rfuster",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "StorageAccountConnectionString2"
+			}
+		}
+	}
+}
