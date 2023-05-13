@@ -1,5 +1,5 @@
 {
-	"name": "ImportDesserts4AllSales",
+	"name": "ImportSTFormatFolder",
 	"properties": {
 		"activities": [
 			{
@@ -7,7 +7,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Set value CreationDate",
+						"activity": "Set RunSeqNo",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -24,19 +24,6 @@
 				"typeProperties": {
 					"source": {
 						"type": "DelimitedTextSource",
-						"additionalColumns": [
-							{
-								"name": "SourceFileName",
-								"value": "$$FILEPATH"
-							},
-							{
-								"name": "CreationDate",
-								"value": {
-									"value": "@variables('CreationDate')",
-									"type": "Expression"
-								}
-							}
-						],
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
@@ -79,22 +66,146 @@
 				]
 			},
 			{
-				"name": "Set value CreationDate",
+				"name": "Set RunSeqNo",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Lookup RunSeqNo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "CreationDate",
+					"variableName": "RunSeqNo",
 					"value": {
-						"value": "@utcnow()",
+						"value": "@activity('Lookup RunSeqNo').output.firstRow.RunSeqEnd",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "Lookup RunSeqNo",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[LogPipelineStart]",
+						"storedProcedureParameters": {
+							"Comments": {
+								"type": "String",
+								"value": {
+									"value": "@concat('Pipeline ',pipeline().Pipeline, ' ejecutado en ',pipeline().DataFactory)",
+									"type": "Expression"
+								}
+							},
+							"PipelineRunId": {
+								"type": "Guid",
+								"value": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								}
+							},
+							"RunStartDateTime": {
+								"type": "DateTime",
+								"value": {
+									"value": "@utcnow()",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ASQL_dboSalesLoad",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Log pipeline outcome",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Import sales data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[LogPipelineEnd]",
+					"storedProcedureParameters": {
+						"FilesRead": {
+							"value": {
+								"value": "@activity('Import sales data').output.filesRead",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RowsCopied": {
+							"value": {
+								"value": "@activity('Import sales data').output.rowsCopied",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RowsRead": {
+							"value": {
+								"value": "@activity('Import sales data').output.rowsRead",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RunEndDateTime": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"RunSeqNo": {
+							"value": {
+								"value": "@variables('RunSeqNo')",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RunStatus": {
+							"value": "Done",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_project01rfuster",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
 		"variables": {
-			"CreationDate": {
-				"type": "String"
+			"RunSeqNo": {
+				"type": "String",
+				"defaultValue": "-1"
 			}
 		},
 		"folder": {
