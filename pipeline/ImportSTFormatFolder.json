@@ -24,6 +24,19 @@
 				"typeProperties": {
 					"source": {
 						"type": "DelimitedTextSource",
+						"additionalColumns": [
+							{
+								"name": "SourceFileName",
+								"value": "$$FILEPATH"
+							},
+							{
+								"name": "RunSeqNo",
+								"value": {
+									"value": "@variables('RunSeqNo')",
+									"type": "Expression"
+								}
+							}
+						],
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
