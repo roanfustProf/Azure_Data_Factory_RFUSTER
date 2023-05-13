@@ -10,7 +10,7 @@
 					"referenceName": "AzureKeyVault_project01rfuster",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "StorageAccountConnectionString2"
+				"secretName": "connectionStringsa1"
 			}
 		}
 	}
