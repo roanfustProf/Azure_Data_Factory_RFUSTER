@@ -80,7 +80,7 @@
 				"typeProperties": {
 					"variableName": "RunSeqNo",
 					"value": {
-						"value": "@activity('Lookup RunSeqNo').output.firstRow.RunSeqEnd",
+						"value": "@string(activity('Lookup RunSeqNo').output.firstRow.RunSeqEnd)",
 						"type": "Expression"
 					}
 				}
