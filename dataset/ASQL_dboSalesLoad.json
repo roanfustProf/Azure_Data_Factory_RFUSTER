@@ -1,10 +1,6 @@
 {
 	"name": "ASQL_dboSalesLoad",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabase1",
-			"type": "LinkedServiceReference"
-		},
 		"folder": {
 			"name": "Chapter_03"
 		},
