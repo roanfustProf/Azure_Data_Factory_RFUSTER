@@ -107,26 +107,6 @@
 									"type": "Int32",
 									"physicalType": "int"
 								}
-							},
-							{
-								"source": {
-									"name": "SourceFileName"
-								},
-								"sink": {
-									"name": "SourceFileName",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CreationDate"
-								},
-								"sink": {
-									"name": "CreationDate",
-									"type": "DateTime",
-									"physicalType": "datetime"
-								}
 							}
 						],
 						"typeConversion": true,
