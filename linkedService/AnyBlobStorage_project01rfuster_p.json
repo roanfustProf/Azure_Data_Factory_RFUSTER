@@ -1,0 +1,25 @@
+{
+	"name": "AnyBlobStorage_project01rfuster_p",
+	"properties": {
+		"parameters": {
+			"ConnectionSecret": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault_project01rfuster",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": {
+					"value": "@linkedService().ConnectionSecret",
+					"type": "Expression"
+				}
+			}
+		}
+	}
+}
