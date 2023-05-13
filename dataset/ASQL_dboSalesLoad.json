@@ -1,6 +1,10 @@
 {
 	"name": "ASQL_dboSalesLoad",
 	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_project01rfuster",
+			"type": "LinkedServiceReference"
+		},
 		"folder": {
 			"name": "Chapter_03"
 		},
