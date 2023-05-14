@@ -1,0 +1,56 @@
+{
+	"name": "ImportSalesFromCSVFile",
+	"properties": {
+		"activities": [
+			{
+				"name": "Import Sales SweetTreats",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "ImportSTFormatFolder",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats",
+						"WildcardFileName": "*.csv",
+						"WilcardContainer": "sampledata",
+						"LinkedServiceConnectionSecret": "connectionStringsa1"
+					}
+				}
+			},
+			{
+				"name": "Import Sales Desserts4All",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Import Sales SweetTreats",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "ImportSTFormatFolder",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/Desserts4All",
+						"WildcardFileName": "*.csv",
+						"WilcardContainer": "sampledata",
+						"LinkedServiceConnectionSecret": "connectionStringsa1"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Chapter_05"
+		},
+		"annotations": []
+	}
+}
