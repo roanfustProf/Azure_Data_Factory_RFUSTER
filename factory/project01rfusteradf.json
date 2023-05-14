@@ -1,5 +1,13 @@
 {
 	"name": "project01rfusteradf",
+	"properties": {
+		"globalParameters": {
+			"EnvironmentName": {
+				"type": "string",
+				"value": "Development"
+			}
+		}
+	},
 	"location": "brazilsouth",
 	"identity": {
 		"type": "SystemAssigned",
