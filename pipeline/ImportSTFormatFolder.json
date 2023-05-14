@@ -73,8 +73,26 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ABS_CSV_SweetTreats",
-						"type": "DatasetReference"
+						"referenceName": "ANY_ABS_CSV",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": {
+								"value": "@pipeline().parameters.WilcardContainer",
+								"type": "Expression"
+							},
+							"Directory": {
+								"value": "@pipeline().parameters.WildcardFolderPath",
+								"type": "Expression"
+							},
+							"File": {
+								"value": "@pipeline().parameters.WildcardFileName",
+								"type": "Expression"
+							},
+							"LinkedServiceConnectionSecret": {
+								"value": "@pipeline().parameters.LinkedServiceConnectionSecret",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
@@ -228,6 +246,13 @@
 			"WildcardFileName": {
 				"type": "string",
 				"defaultValue": "*.csv"
+			},
+			"WilcardContainer": {
+				"type": "string",
+				"defaultValue": "sampledata"
+			},
+			"LinkedServiceConnectionSecret": {
+				"type": "string"
 			}
 		},
 		"variables": {
