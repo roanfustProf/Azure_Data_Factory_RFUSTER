@@ -205,15 +205,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": {
-								"value": "@pipeline().parameters.Container",
+								"value": "@pipeline().parameters.WilcardContainer",
 								"type": "Expression"
 							},
 							"Directory": {
-								"value": "@pipeline().parameters.Directory",
+								"value": "@pipeline().parameters.WildcardFolderPath",
 								"type": "Expression"
 							},
 							"File": {
-								"value": "@pipeline().parameters.File",
+								"value": "@pipeline().parameters.WildcardFileName",
 								"type": "Expression"
 							},
 							"LinkedServiceConnectionSecret": {
@@ -232,14 +232,13 @@
 			}
 		],
 		"parameters": {
-			"Container": {
-				"type": "string",
-				"defaultValue": "sampledata"
-			},
-			"Directory": {
+			"WildcardFolderPath": {
 				"type": "string"
 			},
-			"File": {
+			"WilcardContainer": {
+				"type": "string"
+			},
+			"WildcardFileName": {
 				"type": "string",
 				"defaultValue": "*.csv"
 			},
