@@ -204,10 +204,7 @@
 						"referenceName": "ANY_ABS_CSV",
 						"type": "DatasetReference",
 						"parameters": {
-							"Container": {
-								"value": "@pipeline().parameters.Container",
-								"type": "Expression"
-							},
+							"Container": "sampledata",
 							"Directory": {
 								"value": "@pipeline().parameters.Directory",
 								"type": "Expression"
@@ -216,10 +213,7 @@
 								"value": "@pipeline().parameters.File",
 								"type": "Expression"
 							},
-							"LinkedServiceConnectionSecret": {
-								"value": "@pipeline().parameters.LinkedServiceConnectionSecret",
-								"type": "Expression"
-							}
+							"LinkedServiceConnectionSecret": "connectionStringsa1"
 						}
 					}
 				],
@@ -235,16 +229,8 @@
 			"Directory": {
 				"type": "string"
 			},
-			"Container": {
-				"type": "string",
-				"defaultValue": "sampledata"
-			},
 			"File": {
 				"type": "string"
-			},
-			"LinkedServiceConnectionSecret": {
-				"type": "string",
-				"defaultValue": "connectionStringsa1"
 			}
 		},
 		"variables": {
