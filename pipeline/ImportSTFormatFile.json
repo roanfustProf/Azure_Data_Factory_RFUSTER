@@ -71,11 +71,11 @@
 				}
 			},
 			{
-				"name": "Stored procedure1",
+				"name": "Log pipeline outcome",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Copy data1",
+						"activity": "Import sales data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -88,10 +88,58 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[LogPipelineEnd]",
+					"storedProcedureParameters": {
+						"FilesRead": {
+							"value": {
+								"value": "@activity('Import sales data').output.filesRead",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RowsCopied": {
+							"value": {
+								"value": "@activity('Import sales data').output.rowsCopied",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RowsRead": {
+							"value": {
+								"value": "@activity('Import sales data').output.rowsRead",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RunEndDateTime": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"RunSeqNo": {
+							"value": {
+								"value": "@variables('RunSeqNo')",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RunStatus": {
+							"value": "Done",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_project01rfuster",
+					"type": "LinkedServiceReference"
+				}
 			},
 			{
-				"name": "Copy data1",
+				"name": "Import sales data",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -110,10 +158,96 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"enableStaging": false
-				}
+					"source": {
+						"type": "DelimitedTextSource",
+						"additionalColumns": [
+							{
+								"name": "SourceFileName",
+								"value": "$$FILEPATH"
+							},
+							{
+								"name": "RunSeqNo",
+								"value": {
+									"value": "@variables('RunSeqNo')",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE  [dbo].[Sales_LOAD]",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ANY_ABS_CSV",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": {
+								"value": "@pipeline().parameters.Container",
+								"type": "Expression"
+							},
+							"Directory": {
+								"value": "@pipeline().parameters.Directory",
+								"type": "Expression"
+							},
+							"File": {
+								"value": "@pipeline().parameters.File",
+								"type": "Expression"
+							},
+							"LinkedServiceConnectionSecret": {
+								"value": "@pipeline().parameters.LinkedServiceConnectionSecret",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ASQL_dboSalesLoad",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
+		"parameters": {
+			"Container": {
+				"type": "string",
+				"defaultValue": "sampledata"
+			},
+			"Directory": {
+				"type": "string"
+			},
+			"File": {
+				"type": "string",
+				"defaultValue": "*.csv"
+			},
+			"LinkedServiceConnectionSecret": {
+				"type": "string",
+				"defaultValue": "connectionStringsa1"
+			}
+		},
 		"variables": {
 			"RunSeqNo": {
 				"type": "String",
