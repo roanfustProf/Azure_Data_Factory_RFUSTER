@@ -30,7 +30,7 @@
 				"typeProperties": {
 					"variableName": "Dependencia",
 					"value": {
-						"value": "@string('Hola Rony')",
+						"value": "@string(int('Hola Rony'))",
 						"type": "Expression"
 					}
 				}
