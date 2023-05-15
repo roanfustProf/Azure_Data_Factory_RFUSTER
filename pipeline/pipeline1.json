@@ -1,0 +1,69 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Dependencia",
+					"value": {
+						"value": "@string(int('no es un int'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Dependencia",
+					"value": {
+						"value": "@string('Hola Rony')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable3",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Dependencia",
+					"value": {
+						"value": "@string('Hola Anderson')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"Dependencia": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Chapter_06"
+		},
+		"annotations": []
+	}
+}
