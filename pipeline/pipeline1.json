@@ -20,9 +20,15 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set variable1",
+						"activity": "Set variable4",
 						"dependencyConditions": [
 							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Skipped"
 						]
 					}
 				],
@@ -52,6 +58,19 @@
 					"variableName": "Dependencia",
 					"value": {
 						"value": "@string('Hola Anderson')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable4",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Dependencia",
+					"value": {
+						"value": "@string('hola 2')",
 						"type": "Expression"
 					}
 				}
