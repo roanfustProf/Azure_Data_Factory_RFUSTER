@@ -22,7 +22,7 @@
 							"Comments": {
 								"type": "String",
 								"value": {
-									"value": "@concat('Pipeline ', pipeline().Pipeline, ' ejecutado en ', pipeline().DataFactory)",
+									"value": "@concat('Pipeline ', pipeline().Pipeline, ' ejecutado en ', pipeline().DataFactory, ' cargando archivo ',pipeline().parameters.Directory,'\\', pipeline().parameters.File)",
 									"type": "Expression"
 								}
 							},
@@ -176,14 +176,6 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": {
-								"value": "@pipeline().parameters.WildcardFolderPath",
-								"type": "Expression"
-							},
-							"wildcardFileName": {
-								"value": "@pipeline().parameters.WildcardFileName",
-								"type": "Expression"
-							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -213,15 +205,15 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": {
-								"value": "@pipeline().parameters.WilcardContainer",
+								"value": "@pipeline().parameters.Container",
 								"type": "Expression"
 							},
 							"Directory": {
-								"value": "@pipeline().parameters.WildcardFolderPath",
+								"value": "@pipeline().parameters.Directory",
 								"type": "Expression"
 							},
 							"File": {
-								"value": "@pipeline().parameters.WildcardFileName",
+								"value": "@pipeline().parameters.File",
 								"type": "Expression"
 							},
 							"LinkedServiceConnectionSecret": {
@@ -240,16 +232,15 @@
 			}
 		],
 		"parameters": {
-			"WildcardFolderPath": {
+			"Directory": {
 				"type": "string"
 			},
-			"WilcardContainer": {
+			"Container": {
 				"type": "string",
 				"defaultValue": "sampledata"
 			},
-			"WildcardFileName": {
-				"type": "string",
-				"defaultValue": "*.csv"
+			"File": {
+				"type": "string"
 			},
 			"LinkedServiceConnectionSecret": {
 				"type": "string",
