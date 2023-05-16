@@ -397,7 +397,7 @@
 									"referenceName": "ASQL_dboLoadingError",
 									"type": "DatasetReference",
 									"parameters": {
-										"tableName": "dbo.LoadingError",
+										"tableName": "LoadingError",
 										"schemaTableName": "dbo"
 									}
 								}
