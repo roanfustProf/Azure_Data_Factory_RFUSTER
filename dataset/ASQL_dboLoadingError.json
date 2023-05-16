@@ -1,0 +1,41 @@
+{
+	"name": "ASQL_dboLoadingError",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_project01rfuster",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Chapter_06"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Timestamp",
+				"type": "datetime2",
+				"scale": 7
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OperationName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OperationItem",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Message",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "LoadingError"
+		}
+	}
+}
