@@ -358,7 +358,20 @@
 										"type": "DelimitedTextReadSettings"
 									}
 								},
-								"enableStaging": false
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
 							"inputs": [
 								{
@@ -366,9 +379,22 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": "output",
-										"Directory": "error",
+										"Directory": {
+											"value": "@join(skip(split(activity('Import sales data').output.logFilePath, '/'), 1), '/')",
+											"type": "Expression"
+										},
 										"File": "*",
 										"LinkedServiceConnectionSecret": "connectionStringsa1"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ASQL_dboLoadingError",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableName": "dbo.LoadingError",
+										"schemaTableName": "dbo"
 									}
 								}
 							]
