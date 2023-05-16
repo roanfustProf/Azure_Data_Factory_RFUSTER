@@ -227,7 +227,7 @@
 						"referenceName": "ANY_ABS_CSV",
 						"type": "DatasetReference",
 						"parameters": {
-							"Container": "output",
+							"Container": "sampledata",
 							"Directory": {
 								"value": "@pipeline().parameters.Directory",
 								"type": "Expression"
