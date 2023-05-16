@@ -8,7 +8,7 @@
 		"parameters": {
 			"tableName": {
 				"type": "string",
-				"defaultValue": "dbo.LoadingError"
+				"defaultValue": "LoadingError"
 			},
 			"schemaTableName": {
 				"type": "string",
