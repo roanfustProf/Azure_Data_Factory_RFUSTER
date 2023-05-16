@@ -29,7 +29,16 @@
 						}
 					},
 					"fieldList": [
-						"exists"
+						"exists",
+						{
+							"value": "Item type",
+							"type": "Expression"
+						},
+						{
+							"value": "Item name",
+							"type": "Expression"
+						},
+						"childItems"
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
