@@ -40,6 +40,14 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": {
+								"value": "@pipeline().parameters.Directory",
+								"type": "Expression"
+							},
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.File",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -128,8 +136,19 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ABS_JSON_SugarCube",
-						"type": "DatasetReference"
+						"referenceName": "ABS_JSON",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "sampledata",
+							"Directory": {
+								"value": "@pipeline().parameters.Directory",
+								"type": "Expression"
+							},
+							"File": {
+								"value": "@pipeline().parameters.File",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
