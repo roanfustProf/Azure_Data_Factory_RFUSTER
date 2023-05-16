@@ -67,6 +67,14 @@
 						"mappings": [
 							{
 								"source": {
+									"path": "['Product']"
+								},
+								"sink": {
+									"name": "Product"
+								}
+							},
+							{
+								"source": {
 									"path": "['ManufacturerProductCode']"
 								},
 								"sink": {
