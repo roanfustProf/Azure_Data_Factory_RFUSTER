@@ -5,6 +5,16 @@
 			"referenceName": "AzureSqlDatabase_project01rfuster",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"tableName": {
+				"type": "string",
+				"defaultValue": "dbo.LoadingError"
+			},
+			"schemaTableName": {
+				"type": "string",
+				"defaultValue": "dbo"
+			}
+		},
 		"folder": {
 			"name": "Chapter_06"
 		},
@@ -34,8 +44,14 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo",
-			"table": "LoadingError"
+			"schema": {
+				"value": "@dataset().schemaTableName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().tableName",
+				"type": "Expression"
+			}
 		}
 	}
 }
