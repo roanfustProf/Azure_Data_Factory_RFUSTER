@@ -1,21 +1,9 @@
 {
 	"name": "project01rfusteradf",
-	"properties": {
-		"globalParameters": {
-			"EnvironmentName": {
-				"type": "string",
-				"value": "Development"
-			},
-			"ResourceGroupName": {
-				"type": "string",
-				"value": "project01rfuster-rg"
-			}
-		}
-	},
 	"location": "brazilsouth",
 	"identity": {
 		"type": "SystemAssigned",
-		"principalId": "2bfaa118-9200-4f53-a2cb-8aa08706cfab",
+		"principalId": "a67ee184-b5ce-4373-9604-e6e5121a1510",
 		"tenantId": "4d990d65-6d55-4a8b-9cb6-0728fbc05ee3"
 	}
 }
