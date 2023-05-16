@@ -29,7 +29,11 @@
 						}
 					},
 					"fieldList": [
-						"exists"
+						"exists",
+						{
+							"value": "Item type",
+							"type": "Expression"
+						}
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
