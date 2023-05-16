@@ -210,7 +210,7 @@
 								"referenceName": "AzureBlobStorage_project01rfuster_kv",
 								"type": "LinkedServiceReference"
 							},
-							"path": "output/errors3"
+							"path": "output/errors"
 						}
 					},
 					"translator": {
