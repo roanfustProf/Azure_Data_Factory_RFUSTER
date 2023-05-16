@@ -20,13 +20,13 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set variable4",
+						"activity": "Set variable1",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					},
 					{
-						"activity": "Set variable1",
+						"activity": "Set variable4",
 						"dependencyConditions": [
 							"Completed"
 						]
