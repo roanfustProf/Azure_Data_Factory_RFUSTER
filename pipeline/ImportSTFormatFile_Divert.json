@@ -328,6 +328,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"expression": {
+						"value": "@greater( activity('Import sales data').output.rowsSkipped, 0)",
+						"type": "Expression"
+					},
 					"ifTrueActivities": [
 						{
 							"name": "Copy data1",
