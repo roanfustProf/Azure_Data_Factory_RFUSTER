@@ -40,6 +40,14 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": {
+								"value": "@pipeline().parameters.Directory",
+								"type": "Expression"
+							},
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.File",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -62,8 +70,7 @@
 									"path": "['Product']"
 								},
 								"sink": {
-									"name": "Product",
-									"type": "String"
+									"name": "Product"
 								}
 							},
 							{
@@ -71,8 +78,7 @@
 									"path": "['ManufacturerProductCode']"
 								},
 								"sink": {
-									"name": "ManufacturerProductCode",
-									"type": "String"
+									"name": "ManufacturerProductCode"
 								}
 							},
 							{
@@ -80,8 +86,7 @@
 									"path": "['Units']"
 								},
 								"sink": {
-									"name": "UnitsSold",
-									"type": "Int32"
+									"name": "UnitsSold"
 								}
 							},
 							{
@@ -89,8 +94,7 @@
 									"path": "['Value']"
 								},
 								"sink": {
-									"name": "SalesValueUSD",
-									"type": "Decimal"
+									"name": "SalesValueUSD"
 								}
 							},
 							{
@@ -98,8 +102,7 @@
 									"path": "$['Month']"
 								},
 								"sink": {
-									"name": "SalesMonth",
-									"type": "DateTime"
+									"name": "SalesMonth"
 								}
 							},
 							{
@@ -107,8 +110,15 @@
 									"path": "$['Company']"
 								},
 								"sink": {
-									"name": "Retailer",
-									"type": "String"
+									"name": "Retailer"
+								}
+							},
+							{
+								"source": {
+									"path": "$['SourceFileName']"
+								},
+								"sink": {
+									"name": "SourceFileName"
 								}
 							},
 							{
@@ -116,7 +126,7 @@
 									"path": "$['RunSeqNo']"
 								},
 								"sink": {
-									"name": "Run"
+									"name": "RunSeqNo"
 								}
 							}
 						],
@@ -125,8 +135,19 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ABS_JSON_SugarCube",
-						"type": "DatasetReference"
+						"referenceName": "ABS_JSON",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "sampledata",
+							"Directory": {
+								"value": "@pipeline().parameters.Directory",
+								"type": "Expression"
+							},
+							"File": {
+								"value": "@pipeline().parameters.File",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
