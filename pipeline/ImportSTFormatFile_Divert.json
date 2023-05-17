@@ -320,7 +320,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "Import sales data",
+						"activity": "Datos permanentes",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -404,6 +404,42 @@
 							]
 						}
 					]
+				}
+			},
+			{
+				"name": "Datos permanentes",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Import sales data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[PersistLoadedSales]",
+					"storedProcedureParameters": {
+						"runSeqNo": {
+							"value": {
+								"value": "@variables('RunSeqNo')",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_project01rfuster",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
