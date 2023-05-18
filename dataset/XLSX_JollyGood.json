@@ -5,6 +5,9 @@
 			"referenceName": "AzureBlobStorage_project01rfusterca",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Chapter_07"
+		},
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
