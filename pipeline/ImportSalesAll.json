@@ -52,15 +52,6 @@
 						"File": "*.csv"
 					}
 				}
-			},
-			{
-				"name": "Execute Pipeline4",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"waitOnCompletion": true
-				}
 			}
 		],
 		"folder": {
