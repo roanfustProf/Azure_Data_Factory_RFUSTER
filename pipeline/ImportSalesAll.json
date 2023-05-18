@@ -1,0 +1,71 @@
+{
+	"name": "ImportSalesAll",
+	"properties": {
+		"activities": [
+			{
+				"name": "Import Sales Data SweetTreats",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "ImportSTFormatFile_Divert",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Directory": "azure-data-factory-by-example-main/SampleData/SweetTreats",
+						"File": "*.csv"
+					}
+				}
+			},
+			{
+				"name": "Import Sales Data Desserts4All",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "ImportSTFormatFile_Divert",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Directory": "azure-data-factory-by-example-main/SampleData/Desserts4All",
+						"File": "*.csv"
+					}
+				}
+			},
+			{
+				"name": "Import Sales NaughtyButNice",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "ImportSTFormatFile_Divert",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Directory": "azure-data-factory-by-example-main/SampleData/NaughtyButNice",
+						"File": "*.csv"
+					}
+				}
+			},
+			{
+				"name": "Execute Pipeline4",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Chapter_07"
+		},
+		"annotations": []
+	}
+}
