@@ -6,7 +6,7 @@
 		"type": "AzureBlobStorage",
 		"typeProperties": {
 			"connectionString": "DefaultEndpointsProtocol=https;AccountName=project01rfustersa;EndpointSuffix=core.windows.net;",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEEyQjJDMTBDLTNCNkYtNEJCNS04ODZDLTlGRDMxQzZCMjAwQ18wNjI3M2UwZC03MTUwLTRjZTUtOTJjZi01YzViNDAyMTk4NGYiDQp9"
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDc2MDUzMjkxLTlEQzItNEE0My04NkFFLUI3MTJDM0Q0Q0VDRF8zYmNmNmFkOC1kOGRkLTRiMjgtOWRjYy04Y2FjZDI1MTVmY2MiDQp9"
 		}
 	}
 }
