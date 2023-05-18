@@ -13,6 +13,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "JollyGoodSales"
+				},
+				{
+					"linkedService": {
+						"referenceName": "AzureBlobStorage_project01rfusterca",
+						"type": "LinkedServiceReference"
+					},
+					"name": "ExchangeRates"
 				}
 			],
 			"sinks": [],
@@ -32,6 +39,15 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> JollyGoodSales",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'excel',",
+				"     container: 'sampledata',",
+				"     folderPath: 'azure-data-factory-by-example-main/SampleData',",
+				"     fileName: 'ExchangeRates.xlsx',",
+				"     sheetName: '',",
+				"     firstRowAsHeader: true) ~> ExchangeRates",
 				"JollyGoodSales filter(Product!='Month Total') ~> filter1"
 			]
 		}
