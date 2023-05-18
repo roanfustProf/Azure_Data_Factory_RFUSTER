@@ -25,7 +25,13 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "filter1"
+					"name": "ExcludeMonthTotal"
+				},
+				{
+					"name": "RatesToUSD"
+				},
+				{
+					"name": "LookupExchangeRate"
 				}
 			],
 			"scriptLines": [
@@ -39,7 +45,13 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> JollyGoodSales",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          FromCurrency as string,",
+				"          ToCurrency as string,",
+				"          Date as date,",
+				"          ExchangeRate as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     format: 'excel',",
@@ -48,7 +60,12 @@
 				"     fileName: 'ExchangeRates.xlsx',",
 				"     sheetName: 'Sheet1',",
 				"     firstRowAsHeader: true) ~> ExchangeRates",
-				"JollyGoodSales filter(Product!='Month Total') ~> filter1"
+				"JollyGoodSales filter(Product!='Month Total') ~> ExcludeMonthTotal",
+				"ExchangeRates filter(ToCurrency=='USD') ~> RatesToUSD",
+				"ExcludeMonthTotal, RatesToUSD lookup(Currency == FromCurrency",
+				"     && Period == Date,",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> LookupExchangeRate"
 			]
 		}
 	}
