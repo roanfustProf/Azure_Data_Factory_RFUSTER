@@ -46,7 +46,7 @@
 				"     container: 'sampledata',",
 				"     folderPath: 'azure-data-factory-by-example-main/SampleData',",
 				"     fileName: 'ExchangeRates.xlsx',",
-				"     sheetName: '',",
+				"     sheetName: 'Sheet1',",
 				"     firstRowAsHeader: true) ~> ExchangeRates",
 				"JollyGoodSales filter(Product!='Month Total') ~> filter1"
 			]
