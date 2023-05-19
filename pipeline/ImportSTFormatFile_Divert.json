@@ -241,8 +241,12 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ASQL_dboSalesLoad",
-						"type": "DatasetReference"
+						"referenceName": "ANY_ASQL_TABLE",
+						"type": "DatasetReference",
+						"parameters": {
+							"Par_table": "Sales_LOAD",
+							"Par_esquema": "dbo"
+						}
 					}
 				]
 			},

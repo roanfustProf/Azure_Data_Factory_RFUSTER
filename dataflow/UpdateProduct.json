@@ -18,7 +18,16 @@
 			"sinks": [],
 			"transformations": [],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          RowId as integer,",
+				"          Retailer as string,",
+				"          SalesMonth as date,",
+				"          Product as string,",
+				"          SalesValueUSD as decimal(19,2),",
+				"          UnitsSold as integer,",
+				"          RunSeqNo as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source1"
