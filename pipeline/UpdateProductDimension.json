@@ -25,11 +25,11 @@
 							},
 							"dboProduct": {
 								"Par_table": "Product",
-								"Par_esquema": "sales"
+								"Par_esquema": "dbo"
 							},
 							"dboProductSink": {
-								"Par_table": "Sales",
-								"Par_esquema": "Product"
+								"Par_table": "Product",
+								"Par_esquema": "dbo"
 							}
 						}
 					},
