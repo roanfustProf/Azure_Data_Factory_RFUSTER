@@ -1,0 +1,35 @@
+{
+	"name": "ANY_ASQL_TABLE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_project01rfuster",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Par_table": {
+				"type": "string",
+				"defaultValue": "-1"
+			},
+			"Par_esquema": {
+				"type": "string",
+				"defaultValue": "-1"
+			}
+		},
+		"folder": {
+			"name": "Chapter_07"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().Par_esquema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().Par_table",
+				"type": "Expression"
+			}
+		}
+	}
+}
