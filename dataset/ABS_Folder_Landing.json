@@ -1,0 +1,17 @@
+{
+	"name": "ABS_Folder_Landing",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_project01rfuster_kv",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "landing"
+			}
+		}
+	}
+}
