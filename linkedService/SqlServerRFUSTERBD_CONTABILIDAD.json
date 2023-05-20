@@ -13,6 +13,10 @@
 				},
 				"secretName": "SqlServerRFUSTERP"
 			}
+		},
+		"connectVia": {
+			"referenceName": "LinkedintegrationRuntimeRFUSTER",
+			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
