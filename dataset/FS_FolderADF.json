@@ -1,0 +1,19 @@
+{
+	"name": "FS_FolderADF",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FileServerRFUSTER",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Chapter_08"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation"
+			}
+		}
+	}
+}
