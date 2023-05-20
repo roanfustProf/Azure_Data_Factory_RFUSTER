@@ -39,7 +39,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Folder_landing",
+						"referenceName": "Folder_landing_FAIR",
 						"type": "DatasetReference"
 					}
 				],
