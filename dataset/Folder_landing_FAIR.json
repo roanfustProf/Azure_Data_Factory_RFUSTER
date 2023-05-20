@@ -1,0 +1,23 @@
+{
+	"name": "Folder_landing_FAIR",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_project01rfusterca_FAIR",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Chapter_02"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "landing"
+			},
+			"compression": {
+				"type": "ZipDeflate"
+			}
+		}
+	}
+}
