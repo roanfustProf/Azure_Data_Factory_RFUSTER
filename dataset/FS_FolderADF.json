@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "FileServerLocation",
-				"fileName": "*"
+				"fileName": "SQLAZURE_ADF.sql"
 			}
 		}
 	}
