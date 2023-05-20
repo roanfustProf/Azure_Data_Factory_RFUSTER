@@ -1,0 +1,22 @@
+{
+	"name": "SqlServerRFUSTER",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Data Source=RFUSTER;Initial Catalog=BD_CONTABILIDAD;User ID=pro-cobr1",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault_project01rfuster",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "SqlServerRFUSTERP"
+			}
+		},
+		"connectVia": {
+			"referenceName": "LinkedintegrationRuntimeRFUSTER",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
