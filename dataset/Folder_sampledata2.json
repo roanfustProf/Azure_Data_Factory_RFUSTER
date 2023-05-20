@@ -1,0 +1,20 @@
+{
+	"name": "Folder_sampledata2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_project01rfusterca",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Chapter_02"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "sampledata2"
+			}
+		}
+	}
+}
