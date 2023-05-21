@@ -1,0 +1,44 @@
+{
+	"name": "TestExecutePipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute SSIS package1",
+				"type": "ExecuteSSISPackage",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"packageLocation": {
+						"packagePath": "ProjectSampleSSIS01/Azure-SSIS-IntegrationRuntimeTest/TestPackage.dtsx",
+						"type": "SSISDB"
+					},
+					"environmentPath": null,
+					"connectVia": {
+						"referenceName": "integrationRuntimeSSIS",
+						"type": "IntegrationRuntimeReference"
+					},
+					"loggingLevel": "Basic",
+					"packageParameters": {
+						"PipelineRunId": {
+							"value": {
+								"value": "@string(pipeline().RunId)",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Chapter_08"
+		},
+		"annotations": []
+	}
+}
