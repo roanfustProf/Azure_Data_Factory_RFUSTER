@@ -1,0 +1,42 @@
+{
+	"name": "ABS_PAR_HandyCandy2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_project01rfusterca",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "HandyCandy2.parquet",
+				"folderPath": "datalake",
+				"container": "output"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "Product",
+				"type": "UTF8"
+			},
+			{
+				"name": "Price",
+				"type": "FLOAT"
+			},
+			{
+				"name": "TransactionId",
+				"type": "UTF8"
+			},
+			{
+				"name": "TransactionDate",
+				"type": "INT96"
+			},
+			{
+				"name": "StoreId",
+				"type": "INT32"
+			}
+		]
+	}
+}
