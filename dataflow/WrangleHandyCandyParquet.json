@@ -1,0 +1,23 @@
+{
+	"name": "WrangleHandyCandyParquet",
+	"properties": {
+		"type": "WranglingDataFlow",
+		"folder": {
+			"name": "Chapter_09"
+		},
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "ABS_PAR_HandyCandy2",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'parquet') ~>  ABS_PAR_HandyCandy2",
+					"dataset": {
+						"referenceName": "ABS_PAR_HandyCandy2",
+						"type": "DatasetReference"
+					}
+				}
+			],
+			"script": "section Section1;\r\nshared ABS_PAR_HandyCandy2 = let AdfDoc = AzureStorage.BlobContents(\"https://project01rfustersa.blob.core.windows.net/output/datalake/HandyCandy2.parquet\"), Parquet = Parquet.Document(AdfDoc) in Parquet;\r\nshared UserQuery = let Source = #\"ABS_PAR_HandyCandy2\" in Source;\r\n",
+			"documentLocale": "en-us"
+		}
+	}
+}
