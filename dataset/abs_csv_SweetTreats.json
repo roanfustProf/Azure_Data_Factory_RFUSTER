@@ -1,5 +1,5 @@
 {
-	"name": "ABS_CSV_SweetTreats",
+	"name": "abs_csv_SweetTreats",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage_project01rfusterca",

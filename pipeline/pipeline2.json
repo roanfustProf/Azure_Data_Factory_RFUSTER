@@ -43,7 +43,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ABS_CSV_SweetTreats",
+						"referenceName": "abs_csv_SweetTreats",
 						"type": "DatasetReference"
 					}
 				],
