@@ -9,14 +9,14 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ANY_ASQL_TABLE",
+						"referenceName": "any_asql_table",
 						"type": "DatasetReference"
 					},
 					"name": "dboSales"
 				},
 				{
 					"dataset": {
-						"referenceName": "ANY_ASQL_TABLE",
+						"referenceName": "any_asql_table",
 						"type": "DatasetReference"
 					},
 					"name": "dboProduct"
@@ -25,7 +25,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ANY_ASQL_TABLE",
+						"referenceName": "any_asql_table",
 						"type": "DatasetReference"
 					},
 					"name": "dboProductSink"
@@ -73,7 +73,7 @@
 				"          WeightUnit := iif(endsWith(Product,'oz'), 'oz','g')) ~> DeriveProductFeatures",
 				"DeriveProductFeatures aggregate(groupBy(Product),",
 				"     ProductName = first(ProductName),",
-				"          each(match(startsWith(name, 'Weight')), $$ = first($$))) ~> EliminateDuplicates",
+				"          each(match(startsWith(name,'Weight')), $$ = first($$))) ~> EliminateDuplicates",
 				"EliminateDuplicates, dboProduct exists(EliminateDuplicates@Product == dboProduct@Product,",
 				"     negate:true,",
 				"     broadcast: 'auto')~> NewRowsOnly",

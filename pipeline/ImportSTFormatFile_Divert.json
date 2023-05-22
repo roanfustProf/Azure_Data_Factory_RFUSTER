@@ -241,7 +241,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ANY_ASQL_TABLE",
+						"referenceName": "any_asql_table",
 						"type": "DatasetReference",
 						"parameters": {
 							"Par_table": "Sales_LOAD",

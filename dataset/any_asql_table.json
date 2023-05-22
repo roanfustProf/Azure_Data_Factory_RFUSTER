@@ -1,5 +1,5 @@
 {
-	"name": "ANY_ASQL_TABLE",
+	"name": "any_asql_table",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase_project01rfuster",
