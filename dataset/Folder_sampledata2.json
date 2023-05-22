@@ -2,7 +2,7 @@
 	"name": "Folder_sampledata2",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage_project01rfusterca_FAIR",
+			"referenceName": "azureblobstorage_project01rfusterca_fair",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {

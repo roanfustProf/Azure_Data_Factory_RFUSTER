@@ -1,8 +1,8 @@
 {
-	"name": "Folder_landing_FAIR",
+	"name": "folder_landing_fair",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage_project01rfusterca_FAIR",
+			"referenceName": "azureblobstorage_project01rfusterca_fair",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
