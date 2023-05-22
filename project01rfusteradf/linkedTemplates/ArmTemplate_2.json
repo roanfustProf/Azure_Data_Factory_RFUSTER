@@ -13,25 +13,59 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Folder_sampledata2')]",
+			"name": "[concat(parameters('factoryName'), '/any_abs_json')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_project01rfusterca_FAIR",
-					"type": "LinkedServiceReference"
+					"referenceName": "anyblobstorage_project01rfuster_p",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"ConnectionSecret": {
+							"value": "@dataset().LinkedServiceConnectionSecret",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"Container": {
+						"type": "string"
+					},
+					"Directory": {
+						"type": "string",
+						"defaultValue": "."
+					},
+					"File": {
+						"type": "string",
+						"defaultValue": "."
+					},
+					"LinkedServiceConnectionSecret": {
+						"type": "string"
+					}
 				},
 				"folder": {
-					"name": "Chapter_02"
+					"name": "Chapter_05"
 				},
 				"annotations": [],
-				"type": "Binary",
+				"type": "Json",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "sampledata2"
+						"fileName": {
+							"value": "@dataset().File",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().Directory",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().Container",
+							"type": "Expression"
+						}
 					}
-				}
+				},
+				"schema": {}
 			},
 			"dependsOn": []
 		},
@@ -340,7 +374,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Folder_landing_FAIR",
+								"referenceName": "folder_landing_fair",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -363,9 +397,7 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Folder_sampledata2')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DescoprimirCopiarArchivos')]",
@@ -2411,7 +2443,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/any_abs_json')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/IngestHandyCandyMessages_P')]",

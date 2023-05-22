@@ -11,10 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_project01rfusterca'"
 		},
-		"AzureBlobStorage_project01rfusterca_FAIR_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_project01rfusterca_FAIR'"
-		},
 		"AzureSqlDatabase_project01rfuster_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase_project01rfuster'"
@@ -23,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServerRFUSTERBD_CONTABILIDAD'",
 			"defaultValue": "Integrated Security=False;Data Source=RFUSTER;Initial Catalog=BD_CONTABILIDAD;User ID=pro-cobr1"
+		},
+		"azureblobstorage_project01rfusterca_fair_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'azureblobstorage_project01rfusterca_fair'"
 		},
 		"AzureBlobStorage_project01rfuster_kv_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
@@ -40,6 +40,10 @@
 			"type": "string",
 			"defaultValue": "ESAN_1515497@outlook.com"
 		},
+		"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "@linkedService().ConnectionSecret"
+		},
 		"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
@@ -54,10 +58,6 @@
 		},
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
-		},
-		"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
-			"type": "string",
-			"defaultValue": "@linkedService().ConnectionSecret"
 		},
 		"containerUri": {
 			"type": "string",
@@ -125,11 +125,11 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"AzureBlobStorage_project01rfusterca_FAIR_connectionString": {
-						"value": "[parameters('AzureBlobStorage_project01rfusterca_FAIR_connectionString')]"
-					},
 					"SqlServerRFUSTERBD_CONTABILIDAD_connectionString": {
 						"value": "[parameters('SqlServerRFUSTERBD_CONTABILIDAD_connectionString')]"
+					},
+					"azureblobstorage_project01rfusterca_fair_connectionString": {
+						"value": "[parameters('azureblobstorage_project01rfusterca_fair_connectionString')]"
 					},
 					"AzureBlobStorage_project01rfuster_kv_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('AzureBlobStorage_project01rfuster_kv_properties_typeProperties_connectionString_secretName')]"

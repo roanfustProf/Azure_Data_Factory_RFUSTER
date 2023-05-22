@@ -7,14 +7,14 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "project01rfusteradf"
 		},
-		"AzureBlobStorage_project01rfusterca_FAIR_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_project01rfusterca_FAIR'"
-		},
 		"SqlServerRFUSTERBD_CONTABILIDAD_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SqlServerRFUSTERBD_CONTABILIDAD'",
 			"defaultValue": "Integrated Security=False;Data Source=RFUSTER;Initial Catalog=BD_CONTABILIDAD;User ID=pro-cobr1"
+		},
+		"azureblobstorage_project01rfusterca_fair_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'azureblobstorage_project01rfusterca_fair'"
 		},
 		"AzureBlobStorage_project01rfuster_kv_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
@@ -108,23 +108,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage_project01rfusterca_FAIR')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage_project01rfusterca_FAIR_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "FarAwayintegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/FileServerRFUSTER')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -199,6 +182,23 @@
 							"type": "Expression"
 						}
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azureblobstorage_project01rfusterca_fair')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('azureblobstorage_project01rfusterca_fair_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "FarAwayintegrationRuntime",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": []
@@ -1239,6 +1239,84 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/FS_FolderADF')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FileServerRFUSTER",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Chapter_08"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "SQLAZURE_ADF.sql"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FileServerRFUSTER')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/folder_landing_fair')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "azureblobstorage_project01rfusterca_fair",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Chapter_02"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "landing"
+					},
+					"compression": {
+						"type": "ZipDeflate"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/azureblobstorage_project01rfusterca_fair')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Folder_sampledata2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "azureblobstorage_project01rfusterca_fair",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Chapter_02"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "sampledata2"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/azureblobstorage_project01rfusterca_fair')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/abs_json')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1349,118 +1427,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/anyblobstorage_project01rfuster_p')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/any_abs_json')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "anyblobstorage_project01rfuster_p",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"ConnectionSecret": {
-							"value": "@dataset().LinkedServiceConnectionSecret",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"Container": {
-						"type": "string"
-					},
-					"Directory": {
-						"type": "string",
-						"defaultValue": "."
-					},
-					"File": {
-						"type": "string",
-						"defaultValue": "."
-					},
-					"LinkedServiceConnectionSecret": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "Chapter_05"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().File",
-							"type": "Expression"
-						},
-						"folderPath": {
-							"value": "@dataset().Directory",
-							"type": "Expression"
-						},
-						"container": {
-							"value": "@dataset().Container",
-							"type": "Expression"
-						}
-					}
-				},
-				"schema": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/anyblobstorage_project01rfuster_p')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FS_FolderADF')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "FileServerRFUSTER",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Chapter_08"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "FileServerLocation",
-						"fileName": "SQLAZURE_ADF.sql"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/FileServerRFUSTER')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Folder_landing_FAIR')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_project01rfusterca_FAIR",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Chapter_02"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "landing"
-					},
-					"compression": {
-						"type": "ZipDeflate"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_project01rfusterca_FAIR')]"
 			]
 		}
 	]

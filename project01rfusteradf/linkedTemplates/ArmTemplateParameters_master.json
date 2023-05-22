@@ -8,14 +8,14 @@
 		"AzureBlobStorage_project01rfusterca_connectionString": {
 			"value": ""
 		},
-		"AzureBlobStorage_project01rfusterca_FAIR_connectionString": {
-			"value": ""
-		},
 		"AzureSqlDatabase_project01rfuster_connectionString": {
 			"value": ""
 		},
 		"SqlServerRFUSTERBD_CONTABILIDAD_connectionString": {
 			"value": "Integrated Security=False;Data Source=RFUSTER;Initial Catalog=BD_CONTABILIDAD;User ID=pro-cobr1"
+		},
+		"azureblobstorage_project01rfusterca_fair_connectionString": {
+			"value": ""
 		},
 		"AzureBlobStorage_project01rfuster_kv_properties_typeProperties_connectionString_secretName": {
 			"value": "connectionStringsa1"
@@ -29,6 +29,9 @@
 		"FileServerRFUSTER_properties_typeProperties_userId": {
 			"value": "ESAN_1515497@outlook.com"
 		},
+		"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
+			"value": "@linkedService().ConnectionSecret"
+		},
 		"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
 			"value": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
 		},
@@ -40,9 +43,6 @@
 		},
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"value": ""
-		},
-		"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
-			"value": "@linkedService().ConnectionSecret"
 		},
 		"containerUri": {
 			"value": ""
