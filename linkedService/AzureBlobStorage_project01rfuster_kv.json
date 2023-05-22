@@ -1,6 +1,7 @@
 {
 	"name": "AzureBlobStorage_project01rfuster_kv",
 	"properties": {
+		"description": "Utiliza key vault",
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
