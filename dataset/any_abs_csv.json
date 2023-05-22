@@ -1,6 +1,16 @@
 {
 	"name": "any_abs_csv",
 	"properties": {
+		"linkedServiceName": {
+			"referenceName": "anyblobstorage_project01rfuster_p",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"ConnectionSecret": {
+					"value": "@dataset().LinkedServiceConnectionSecret",
+					"type": "Expression"
+				}
+			}
+		},
 		"parameters": {
 			"Container": {
 				"type": "string"
