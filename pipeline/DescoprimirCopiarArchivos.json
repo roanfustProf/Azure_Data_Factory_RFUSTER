@@ -22,11 +22,7 @@
 							"recursive": true
 						},
 						"formatSettings": {
-							"type": "BinaryReadSettings",
-							"compressionProperties": {
-								"type": "ZipDeflateReadSettings",
-								"preserveZipFileNameAsFolder": false
-							}
+							"type": "BinaryReadSettings"
 						}
 					},
 					"sink": {
@@ -39,7 +35,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Folder_landing",
+						"referenceName": "ABS_Folder_Landing",
 						"type": "DatasetReference"
 					}
 				],
