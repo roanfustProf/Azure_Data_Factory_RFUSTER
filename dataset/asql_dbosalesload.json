@@ -1,5 +1,5 @@
 {
-	"name": "ASQL_dboSalesLoad",
+	"name": "asql_dbosalesload",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase_project01rfuster",

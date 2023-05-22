@@ -91,7 +91,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ASQL_dboSalesLoad",
+						"referenceName": "asql_dbosalesload",
 						"type": "DatasetReference"
 					}
 				]
