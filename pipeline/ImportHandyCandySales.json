@@ -85,7 +85,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ABS_PAR_HandyCandy",
+						"referenceName": "abs_par_handycandy",
 						"type": "DatasetReference"
 					}
 				],

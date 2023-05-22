@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "ANY_ABS_CSV",
+						"referenceName": "any_abs_csv",
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "sampledata",
@@ -34,6 +34,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {

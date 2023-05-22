@@ -1,5 +1,5 @@
 {
-	"name": "XLSX_JollyGood",
+	"name": "xlsx_jollygood",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage_project01rfusterca",

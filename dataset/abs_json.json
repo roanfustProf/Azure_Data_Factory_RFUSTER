@@ -1,5 +1,5 @@
 {
-	"name": "ABS_JSON",
+	"name": "abs_json",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage_project01rfuster_kv",

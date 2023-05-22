@@ -1,5 +1,5 @@
 {
-	"name": "ABS_CSV_CandyShack",
+	"name": "abs_csv_candyshack",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage_project01rfusterca",

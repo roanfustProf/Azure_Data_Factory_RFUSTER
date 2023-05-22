@@ -9,7 +9,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "XLSX_JollyGood",
+						"referenceName": "xlsx_jollygood",
 						"type": "DatasetReference"
 					},
 					"name": "JollyGoodSales"

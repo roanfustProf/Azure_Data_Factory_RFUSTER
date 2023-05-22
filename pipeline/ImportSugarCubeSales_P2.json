@@ -99,7 +99,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ANY_ABS_JSON",
+						"referenceName": "any_abs_json",
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "sampledata",

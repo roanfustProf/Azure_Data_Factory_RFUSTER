@@ -1,5 +1,5 @@
 {
-	"name": "ANY_ABS_CSV",
+	"name": "any_abs_csv",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AnyBlobStorage_project01rfuster_p",

@@ -1,5 +1,5 @@
 {
-	"name": "WrangleHandyCandyParquet",
+	"name": "wranglehandycandyparquet",
 	"properties": {
 		"type": "WranglingDataFlow",
 		"folder": {
@@ -9,7 +9,7 @@
 			"sources": [
 				{
 					"name": "ABS_PAR_HandyCandy2",
-					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'parquet') ~>  ABS_PAR_HandyCandy2",
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'parquet') ~> ABS_PAR_HandyCandy2",
 					"dataset": {
 						"referenceName": "ABS_PAR_HandyCandy2",
 						"type": "DatasetReference"

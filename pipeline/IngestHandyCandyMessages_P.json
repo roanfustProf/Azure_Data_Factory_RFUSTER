@@ -42,7 +42,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ABS_JSON",
+						"referenceName": "abs_json",
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "sampledata",
@@ -53,7 +53,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "ABS_PAR_HandyCandy",
+						"referenceName": "abs_par_handycandy",
 						"type": "DatasetReference"
 					}
 				]

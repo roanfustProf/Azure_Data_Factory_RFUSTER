@@ -209,7 +209,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ANY_ABS_CSV",
+						"referenceName": "any_abs_csv",
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "sampledata",

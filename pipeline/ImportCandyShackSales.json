@@ -123,7 +123,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ABS_CSV_CandyShack",
+						"referenceName": "abs_csv_candyshack",
 						"type": "DatasetReference"
 					}
 				],

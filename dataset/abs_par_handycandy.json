@@ -1,5 +1,5 @@
 {
-	"name": "ABS_PAR_HandyCandy",
+	"name": "abs_par_handycandy",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage_project01rfusterca",
