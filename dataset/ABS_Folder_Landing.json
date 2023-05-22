@@ -11,6 +11,9 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"container": "landing"
+			},
+			"compression": {
+				"type": "deflate"
 			}
 		}
 	}
