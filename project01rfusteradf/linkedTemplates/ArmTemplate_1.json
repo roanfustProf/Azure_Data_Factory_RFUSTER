@@ -1230,7 +1230,7 @@
 						"container": "landing"
 					},
 					"compression": {
-						"type": "deflate"
+						"type": "ZipDeflate"
 					}
 				}
 			},
