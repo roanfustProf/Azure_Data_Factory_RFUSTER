@@ -1,0 +1,173 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "project01rfusteradf"
+		},
+		"AzureBlobStorage_project01rfusterca_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_project01rfusterca'"
+		},
+		"AzureBlobStorage_project01rfusterca_FAIR_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_project01rfusterca_FAIR'"
+		},
+		"AzureSqlDatabase_project01rfuster_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase_project01rfuster'"
+		},
+		"SqlServerRFUSTERBD_CONTABILIDAD_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerRFUSTERBD_CONTABILIDAD'",
+			"defaultValue": "Integrated Security=False;Data Source=RFUSTER;Initial Catalog=BD_CONTABILIDAD;User ID=pro-cobr1"
+		},
+		"AzureBlobStorage_project01rfuster_kv_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "connectionStringsa1"
+		},
+		"AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://project01rfusterkv10.vault.azure.net/"
+		},
+		"FileServerRFUSTER_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "D:\\AZURE_DATA_FACTORY"
+		},
+		"FileServerRFUSTER_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "ESAN_1515497@outlook.com"
+		},
+		"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
+		},
+		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
+			"type": "string",
+			"defaultValue": "project01rfustersqldbs.database.windows.net"
+		},
+		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
+			"type": "string",
+			"defaultValue": "rfuster"
+		},
+		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
+			"type": "secureString"
+		},
+		"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "@linkedService().ConnectionSecret"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "project01rfusteradf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage_project01rfusterca_connectionString": {
+						"value": "[parameters('AzureBlobStorage_project01rfusterca_connectionString')]"
+					},
+					"AzureSqlDatabase_project01rfuster_connectionString": {
+						"value": "[parameters('AzureSqlDatabase_project01rfuster_connectionString')]"
+					},
+					"AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl')]"
+					},
+					"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
+						"value": "[parameters('integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint')]"
+					},
+					"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
+						"value": "[parameters('integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName')]"
+					},
+					"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
+						"value": "[parameters('integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "project01rfusteradf_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage_project01rfusterca_FAIR_connectionString": {
+						"value": "[parameters('AzureBlobStorage_project01rfusterca_FAIR_connectionString')]"
+					},
+					"SqlServerRFUSTERBD_CONTABILIDAD_connectionString": {
+						"value": "[parameters('SqlServerRFUSTERBD_CONTABILIDAD_connectionString')]"
+					},
+					"AzureBlobStorage_project01rfuster_kv_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('AzureBlobStorage_project01rfuster_kv_properties_typeProperties_connectionString_secretName')]"
+					},
+					"FileServerRFUSTER_properties_typeProperties_host": {
+						"value": "[parameters('FileServerRFUSTER_properties_typeProperties_host')]"
+					},
+					"FileServerRFUSTER_properties_typeProperties_userId": {
+						"value": "[parameters('FileServerRFUSTER_properties_typeProperties_userId')]"
+					},
+					"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'project01rfusteradf_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "project01rfusteradf_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'project01rfusteradf_ArmTemplate_1')]"
+			]
+		}
+	]
+}
