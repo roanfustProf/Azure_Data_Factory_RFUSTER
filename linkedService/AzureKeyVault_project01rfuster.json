@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "https://project01rfusterkv9.vault.azure.net/"
+			"baseUrl": "https://project01rfusterkv10.vault.azure.net/"
 		}
 	}
 }
