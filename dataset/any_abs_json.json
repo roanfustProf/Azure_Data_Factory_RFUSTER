@@ -1,16 +1,6 @@
 {
 	"name": "any_abs_json",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "AnyBlobStorage_project01rfuster_p",
-			"type": "LinkedServiceReference",
-			"parameters": {
-				"ConnectionSecret": {
-					"value": "@dataset().LinkedServiceConnectionSecret",
-					"type": "Expression"
-				}
-			}
-		},
 		"parameters": {
 			"Container": {
 				"type": "string"
