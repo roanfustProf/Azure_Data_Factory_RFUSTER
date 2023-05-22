@@ -140,6 +140,10 @@
 							"type": "String"
 						}
 					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_project01rfuster",
+					"type": "LinkedServiceReference"
 				}
 			},
 			{
