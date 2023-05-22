@@ -5,6 +5,9 @@
 			"referenceName": "AzureBlobStorage_project01rfuster_kv",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Chapter_02"
+		},
 		"annotations": [],
 		"type": "Binary",
 		"typeProperties": {

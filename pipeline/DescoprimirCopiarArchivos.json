@@ -41,7 +41,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Folder_sampledata",
+						"referenceName": "ABS_Folder_sampledata",
 						"type": "DatasetReference"
 					}
 				]

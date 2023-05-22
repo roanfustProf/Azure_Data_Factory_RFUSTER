@@ -1,5 +1,5 @@
 {
-	"name": "Folder_sampledata",
+	"name": "ABS_Folder_sampledata",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage_project01rfusterca",
