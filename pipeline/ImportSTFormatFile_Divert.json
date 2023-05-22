@@ -397,7 +397,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "ASQL_dboLoadingError",
+									"referenceName": "asql_dboloadingerror",
 									"type": "DatasetReference",
 									"parameters": {
 										"tableName": "LoadingError",

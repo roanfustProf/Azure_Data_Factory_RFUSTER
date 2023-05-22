@@ -1,5 +1,5 @@
 {
-	"name": "ASQL_dboLoadingError",
+	"name": "asql_dboloadingerror",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase_project01rfuster",
