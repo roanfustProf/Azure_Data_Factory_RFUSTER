@@ -1,5 +1,5 @@
 {
-	"name": "ABS_JSON_SugarCube",
+	"name": "abs_json_sugarcube",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage_project01rfusterca",

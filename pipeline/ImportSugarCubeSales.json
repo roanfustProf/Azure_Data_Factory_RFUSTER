@@ -99,7 +99,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ABS_JSON_SugarCube",
+						"referenceName": "abs_json_sugarcube",
 						"type": "DatasetReference"
 					}
 				],

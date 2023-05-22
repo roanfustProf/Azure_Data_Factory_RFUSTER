@@ -93,7 +93,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ABS_JSON_HandyCandy",
+						"referenceName": "abs_json_handycandy",
 						"type": "DatasetReference"
 					}
 				],
