@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copiar_archivos",
+				"name": "CopiarArchivos",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
