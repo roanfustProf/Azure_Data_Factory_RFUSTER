@@ -44,10 +44,6 @@
 			"type": "string",
 			"defaultValue": "@linkedService().ConnectionSecret"
 		},
-		"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
-		},
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
 			"type": "string",
 			"defaultValue": "project01rfustersqldbs.database.windows.net"
@@ -58,6 +54,18 @@
 		},
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
+		},
+		"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
+		},
+		"default_properties_EnvironmentName_value": {
+			"type": "string",
+			"defaultValue": "development"
+		},
+		"default_properties_ResourceGroupName_value": {
+			"type": "string",
+			"defaultValue": "project01rfuster-rg"
 		}
 	},
 	"variables": {
@@ -4094,34 +4102,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/folder_landing_fair')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "azureblobstorage_project01rfusterca_fair",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Chapter_02"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "landing"
-					},
-					"compression": {
-						"type": "ZipDeflate"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/azureblobstorage_project01rfusterca_fair')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Folder_sampledata2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4786,6 +4766,34 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/folder_landing_fair')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "azureblobstorage_project01rfusterca_fair",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Chapter_02"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "landing"
+					},
+					"compression": {
+						"type": "ZipDeflate"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/azureblobstorage_project01rfusterca_fair')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/xlsx_jollygood')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4917,14 +4925,9 @@
 						},
 						"secretName": "connectionPFileSystemRFUSTER"
 					}
-				},
-				"connectVia": {
-					"referenceName": "LinkedintegrationRuntimeRFUSTER",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/LinkedintegrationRuntimeRFUSTER')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault_project01rfuster')]"
 			]
 		},
@@ -4945,14 +4948,9 @@
 						},
 						"secretName": "SqlServerRFUSTERP"
 					}
-				},
-				"connectVia": {
-					"referenceName": "LinkedintegrationRuntimeRFUSTER",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/LinkedintegrationRuntimeRFUSTER')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault_project01rfuster')]"
 			]
 		},
@@ -4987,15 +4985,40 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LinkedintegrationRuntimeRFUSTER')]",
+			"name": "[concat(parameters('factoryName'), '/azureblobstorage_project01rfusterca_fair')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('azureblobstorage_project01rfusterca_fair_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "FarAwayintegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/FarAwayintegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FarAwayintegrationRuntime')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"type": "SelfHosted",
+				"type": "Managed",
 				"typeProperties": {
-					"linkedInfo": {
-						"resourceId": "[parameters('LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId')]",
-						"authorizationType": "Rbac"
+					"computeProperties": {
+						"location": "Australia East",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 10,
+							"cleanup": false,
+							"customProperties": []
+						}
 					}
 				}
 			},
@@ -5302,44 +5325,35 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/FarAwayintegrationRuntime')]",
+			"name": "[concat(parameters('factoryName'), '/LinkedintegrationRuntimeRFUSTER')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"type": "Managed",
+				"type": "SelfHosted",
 				"typeProperties": {
-					"computeProperties": {
-						"location": "Australia East",
-						"dataFlowProperties": {
-							"computeType": "General",
-							"coreCount": 8,
-							"timeToLive": 10,
-							"cleanup": false,
-							"customProperties": []
-						}
+					"linkedInfo": {
+						"resourceId": "[parameters('LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
 					}
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/azureblobstorage_project01rfusterca_fair')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/globalparameters",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('azureblobstorage_project01rfusterca_fair_connectionString')]"
+				"EnvironmentName": {
+					"type": "string",
+					"value": "[parameters('default_properties_EnvironmentName_value')]"
 				},
-				"connectVia": {
-					"referenceName": "FarAwayintegrationRuntime",
-					"type": "IntegrationRuntimeReference"
+				"ResourceGroupName": {
+					"type": "string",
+					"value": "[parameters('default_properties_ResourceGroupName_value')]"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/FarAwayintegrationRuntime')]"
-			]
+			"dependsOn": []
 		}
 	]
 }

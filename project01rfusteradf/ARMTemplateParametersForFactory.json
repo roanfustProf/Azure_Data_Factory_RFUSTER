@@ -32,9 +32,6 @@
 		"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
 			"value": "@linkedService().ConnectionSecret"
 		},
-		"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
-			"value": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
-		},
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
 			"value": "project01rfustersqldbs.database.windows.net"
 		},
@@ -43,6 +40,15 @@
 		},
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"value": ""
+		},
+		"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
+		},
+		"default_properties_EnvironmentName_value": {
+			"value": "development"
+		},
+		"default_properties_ResourceGroupName_value": {
+			"value": "project01rfuster-rg"
 		}
 	}
 }

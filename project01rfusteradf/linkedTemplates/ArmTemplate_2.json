@@ -70,6 +70,32 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/folder_landing_fair')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "azureblobstorage_project01rfusterca_fair",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Chapter_02"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "landing"
+					},
+					"compression": {
+						"type": "ZipDeflate"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/TransformJollyGoodSales')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -397,7 +423,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/folder_landing_fair')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DescoprimirCopiarArchivos')]",
@@ -2893,71 +2921,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/ImportSTFormatFile_Divert')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ImportSalesFromCSVFile')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Import Sales SweetTreats",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "ImportSTFormatFolder",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {
-								"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats",
-								"WildcardFileName": "*.csv",
-								"WilcardContainer": "sampledata",
-								"LinkedServiceConnectionSecret": "connectionStringsa1"
-							}
-						}
-					},
-					{
-						"name": "Import Sales Desserts4All",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Import Sales SweetTreats",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "ImportSTFormatFolder",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {
-								"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/Desserts4All",
-								"WildcardFileName": "*.csv",
-								"WilcardContainer": "sampledata",
-								"LinkedServiceConnectionSecret": "connectionStringsa1"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Chapter_05"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/ImportSTFormatFolder')]"
 			]
 		}
 	]
