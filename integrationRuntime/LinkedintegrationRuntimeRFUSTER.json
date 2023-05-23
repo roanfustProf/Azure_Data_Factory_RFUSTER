@@ -1,0 +1,12 @@
+{
+	"name": "LinkedintegrationRuntimeRFUSTER",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}
