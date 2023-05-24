@@ -6,6 +6,22 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "project01rfusteradf"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
+			"type": "string",
+			"defaultValue": "azure-data-factory-by-example-main/SampleData/Desserts4All"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
+			"type": "string",
+			"defaultValue": "*.csv"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WilcardContainer": {
+			"type": "string",
+			"defaultValue": "sampledata"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret": {
+			"type": "string",
+			"defaultValue": "connectionStringsa1"
 		}
 	},
 	"variables": {
@@ -141,6 +157,46 @@
 					"name": "Chapter_05"
 				},
 				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RunEvery2Minutes')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "ImportSweetTreatsSales_Audit",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "ImportSTFormatFolder",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"WildcardFolderPath": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath')]",
+							"WildcardFileName": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName')]",
+							"WilcardContainer": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WilcardContainer')]",
+							"LinkedServiceConnectionSecret": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 2,
+						"startTime": "2023-05-24T13:36:00",
+						"timeZone": "SA Pacific Standard Time"
+					}
+				}
 			},
 			"dependsOn": []
 		}

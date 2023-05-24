@@ -59,6 +59,22 @@
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
 		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
+			"type": "string",
+			"defaultValue": "azure-data-factory-by-example-main/SampleData/Desserts4All"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
+			"type": "string",
+			"defaultValue": "*.csv"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WilcardContainer": {
+			"type": "string",
+			"defaultValue": "sampledata"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret": {
+			"type": "string",
+			"defaultValue": "connectionStringsa1"
+		},
 		"default_properties_EnvironmentName_value": {
 			"type": "string",
 			"defaultValue": "development"
@@ -196,6 +212,18 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
+						"value": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath')]"
+					},
+					"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
+						"value": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName')]"
+					},
+					"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WilcardContainer": {
+						"value": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WilcardContainer')]"
+					},
+					"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret": {
+						"value": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret')]"
 					}
 				}
 			},

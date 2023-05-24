@@ -44,6 +44,18 @@
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"value": ""
 		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
+			"value": "azure-data-factory-by-example-main/SampleData/Desserts4All"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
+			"value": "*.csv"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WilcardContainer": {
+			"value": "sampledata"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret": {
+			"value": "connectionStringsa1"
+		},
 		"default_properties_EnvironmentName_value": {
 			"value": "development"
 		},

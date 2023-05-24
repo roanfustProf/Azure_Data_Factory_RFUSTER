@@ -337,7 +337,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "sampledata2"
+						"container": "sampledata"
 					}
 				}
 			},
