@@ -15,8 +15,103 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"enableStaging": false
-				}
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "['employee_name']"
+								},
+								"sink": {
+									"name": "employee_name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['employee_salary']"
+								},
+								"sink": {
+									"name": "employee_salary"
+								}
+							},
+							{
+								"source": {
+									"path": "['employee_age']"
+								},
+								"sink": {
+									"name": "employee_age"
+								}
+							},
+							{
+								"source": {
+									"path": "['profile_image']"
+								},
+								"sink": {
+									"name": "profile_image"
+								}
+							},
+							{
+								"source": {
+									"path": "$['status']"
+								},
+								"sink": {
+									"name": "status"
+								}
+							},
+							{
+								"source": {
+									"path": "$['message']"
+								},
+								"sink": {
+									"name": "message"
+								}
+							}
+						],
+						"collectionReference": "$['data']"
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "RestResourceEmployees",
+						"type": "DatasetReference",
+						"parameters": {
+							"nameService": "employees"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "asqldb_dbotbluser",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"folder": {

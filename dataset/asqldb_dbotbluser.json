@@ -1,0 +1,19 @@
+{
+	"name": "asqldb_dbotbluser",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_project01rfuster",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Others"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "tblUser"
+		}
+	}
+}
