@@ -1,0 +1,28 @@
+trigger:
+  branches:
+    include:
+      - adf_publish
+  paths:
+    exclude:
+      - devops-pipelines
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'aserviceconnection01'
+    subscriptionId: '92388c65-7bea-417c-afc3-568a78329c7a'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'project01rfuster-rg'
+    location: 'brazilsouth'
+    templateLocation: 'Linked artifact'
+    csmFile: 'project01rfusteradf/ARMTemplateForFactory.json'
+    csmParametersFile: 'project01rfusteradf/ARMTemplateParametersForFactory.json'
+    overrideParameters: |
+      - factoryName "project01rfusteradfprd"
+      - myKeyVaultUrl "$(myKeyVaultUrl)"
+    deploymentMode: 'Incremental'

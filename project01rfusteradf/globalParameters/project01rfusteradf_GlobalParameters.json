@@ -1,0 +1,10 @@
+{
+	"EnvironmentName": {
+		"type": "string",
+		"value": "development"
+	},
+	"ResourceGroupName": {
+		"type": "string",
+		"value": "project01rfuster-rg"
+	}
+}
