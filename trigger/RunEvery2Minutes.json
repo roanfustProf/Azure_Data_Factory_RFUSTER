@@ -1,0 +1,24 @@
+{
+	"name": "RunEvery2Minutes",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "ImportSweetTreatsSales_Audit",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 2,
+				"startTime": "2023-05-24T13:36:00",
+				"timeZone": "SA Pacific Standard Time"
+			}
+		}
+	}
+}
