@@ -189,6 +189,10 @@
 						},
 						"secretName": "connectionPFileSystemRFUSTER"
 					}
+				},
+				"connectVia": {
+					"referenceName": "LinkedIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": []
@@ -210,6 +214,10 @@
 						},
 						"secretName": "SqlServerRFUSTERP"
 					}
+				},
+				"connectVia": {
+					"referenceName": "LinkedIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": []
