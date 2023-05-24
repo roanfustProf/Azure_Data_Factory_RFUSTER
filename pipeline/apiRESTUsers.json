@@ -25,12 +25,11 @@
 						}
 					},
 					"sink": {
-						"type": "RestSink",
-						"httpRequestTimeout": "00:01:40",
-						"requestInterval": 10,
-						"requestMethod": "POST",
-						"writeBatchSize": 10000,
-						"httpCompressionType": "none"
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
 					"translator": {
@@ -41,7 +40,8 @@
 									"path": "$['id']"
 								},
 								"sink": {
-									"name": "id"
+									"name": "id",
+									"type": "Int32"
 								}
 							},
 							{
@@ -49,7 +49,8 @@
 									"path": "$['name']"
 								},
 								"sink": {
-									"name": "name"
+									"name": "name",
+									"type": "String"
 								}
 							},
 							{
@@ -70,54 +71,6 @@
 							},
 							{
 								"source": {
-									"path": "$['address']['street']"
-								},
-								"sink": {
-									"name": "street"
-								}
-							},
-							{
-								"source": {
-									"path": "$['address']['suite']"
-								},
-								"sink": {
-									"name": "suite"
-								}
-							},
-							{
-								"source": {
-									"path": "$['address']['city']"
-								},
-								"sink": {
-									"name": "city"
-								}
-							},
-							{
-								"source": {
-									"path": "$['address']['zipcode']"
-								},
-								"sink": {
-									"name": "zipcode"
-								}
-							},
-							{
-								"source": {
-									"path": "$['address']['geo']['lat']"
-								},
-								"sink": {
-									"name": "lat"
-								}
-							},
-							{
-								"source": {
-									"path": "$['address']['geo']['lng']"
-								},
-								"sink": {
-									"name": "lng"
-								}
-							},
-							{
-								"source": {
 									"path": "$['phone']"
 								},
 								"sink": {
@@ -130,30 +83,6 @@
 								},
 								"sink": {
 									"name": "website"
-								}
-							},
-							{
-								"source": {
-									"path": "$['company']['name']"
-								},
-								"sink": {
-									"name": "company_name"
-								}
-							},
-							{
-								"source": {
-									"path": "$['company']['catchPhrase']"
-								},
-								"sink": {
-									"name": "catchPhrase"
-								}
-							},
-							{
-								"source": {
-									"path": "$['company']['bs']"
-								},
-								"sink": {
-									"name": "bs"
 								}
 							}
 						],
@@ -168,7 +97,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "RestResourceUser",
+						"referenceName": "asqldb_dbotblUser",
 						"type": "DatasetReference"
 					}
 				]
