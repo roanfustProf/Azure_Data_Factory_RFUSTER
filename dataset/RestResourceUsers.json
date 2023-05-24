@@ -1,5 +1,5 @@
 {
-	"name": "asqldb_any_table",
+	"name": "RestResourceUsers",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureSqlDatabase_project01rfuster",
