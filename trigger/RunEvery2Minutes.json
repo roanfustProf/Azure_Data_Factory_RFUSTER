@@ -9,6 +9,18 @@
 					"referenceName": "ImportSweetTreatsSales_Audit",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "ImportSTFormatFolder",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/Desserts4All",
+					"WildcardFileName": "*.csv",
+					"WilcardContainer": "sampledata",
+					"LinkedServiceConnectionSecret": "connectionStringsa1"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
