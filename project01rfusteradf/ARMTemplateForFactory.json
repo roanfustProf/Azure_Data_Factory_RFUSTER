@@ -30,7 +30,7 @@
 		},
 		"AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://project01rfusterkv10.vault.azure.net/"
+			"defaultValue": "https://project01rfusterkv11.vault.azure.net/"
 		},
 		"FileServerRFUSTER_properties_typeProperties_host": {
 			"type": "string",
@@ -44,6 +44,10 @@
 			"type": "string",
 			"defaultValue": "@linkedService().ConnectionSecret"
 		},
+		"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
+		},
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
 			"type": "string",
 			"defaultValue": "project01rfustersqldbs.database.windows.net"
@@ -54,10 +58,6 @@
 		},
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
-		},
-		"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
 		},
 		"default_properties_EnvironmentName_value": {
 			"type": "string",
@@ -5025,6 +5025,21 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/LinkedintegrationRuntimeRFUSTER')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/integrationRuntimeSSIS')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -5325,19 +5340,74 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LinkedintegrationRuntimeRFUSTER')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"name": "[concat(parameters('factoryName'), '/pipeline5')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {
-					"linkedInfo": {
-						"resourceId": "[parameters('LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId')]",
-						"authorizationType": "Rbac"
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings",
+									"compressionProperties": {
+										"type": "ZipDeflateReadSettings"
+									}
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "ABS_Folder_Landing",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ABS_Folder_sampledata",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
-				}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Chapter_02"
+				},
+				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ABS_Folder_Landing')]",
+				"[concat(variables('factoryId'), '/datasets/ABS_Folder_sampledata')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/default')]",

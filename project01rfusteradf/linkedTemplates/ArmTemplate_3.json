@@ -13,6 +13,75 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/ImportSalesAll')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Import Sales Data SweetTreats",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "ImportSTFormatFile_Divert",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"Directory": "azure-data-factory-by-example-main/SampleData/SweetTreats",
+								"File": "*.csv"
+							}
+						}
+					},
+					{
+						"name": "Import Sales Data Desserts4All",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "ImportSTFormatFile_Divert",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"Directory": "azure-data-factory-by-example-main/SampleData/Desserts4All",
+								"File": "*.csv"
+							}
+						}
+					},
+					{
+						"name": "Import Sales NaughtyButNice",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "ImportSTFormatFile_Divert",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"Directory": "azure-data-factory-by-example-main/SampleData/NaughtyButNice",
+								"File": "*.csv"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Chapter_07"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ImportSalesFromCSVFile')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",

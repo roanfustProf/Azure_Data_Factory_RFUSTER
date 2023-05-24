@@ -30,7 +30,7 @@
 		},
 		"AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://project01rfusterkv10.vault.azure.net/"
+			"defaultValue": "https://project01rfusterkv11.vault.azure.net/"
 		},
 		"FileServerRFUSTER_properties_typeProperties_host": {
 			"type": "string",
@@ -44,6 +44,10 @@
 			"type": "string",
 			"defaultValue": "@linkedService().ConnectionSecret"
 		},
+		"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
+		},
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
 			"type": "string",
 			"defaultValue": "project01rfustersqldbs.database.windows.net"
@@ -54,10 +58,6 @@
 		},
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
-		},
-		"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
 		},
 		"default_properties_EnvironmentName_value": {
 			"type": "string",
@@ -109,6 +109,9 @@
 					"AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl')]"
 					},
+					"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId')]"
+					},
 					"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
 						"value": "[parameters('integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint')]"
 					},
@@ -117,9 +120,6 @@
 					},
 					"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 						"value": "[parameters('integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword')]"
-					},
-					"LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId": {
-						"value": "[parameters('LinkedintegrationRuntimeRFUSTER_properties_typeProperties_linkedInfo_resourceId')]"
 					}
 				}
 			},
