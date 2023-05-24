@@ -1,0 +1,19 @@
+{
+	"name": "RestResourceUser",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestServiceAnonymousDummy",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"urlService": "https://jsonplaceholder.typicode.com/",
+				"nameService": "users"
+			}
+		},
+		"folder": {
+			"name": "Others"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
