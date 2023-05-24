@@ -26,8 +26,8 @@
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
-				"frequency": "Hour",
-				"interval": 24,
+				"frequency": "Minute",
+				"interval": 2,
 				"startTime": "2023-05-24T13:36:00",
 				"timeZone": "SA Pacific Standard Time"
 			}
