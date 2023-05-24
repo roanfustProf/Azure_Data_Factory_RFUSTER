@@ -45,7 +45,7 @@
 			"value": ""
 		},
 		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
-			"value": "azure-data-factory-by-example-main/SampleData/Desserts4All"
+			"value": "azure-data-factory-by-example-main.zip/azure-data-factory-by-example-main/SampleData/Desserts4All"
 		},
 		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
 			"value": "*.csv"
