@@ -40,8 +40,7 @@
 									"path": "$['id']"
 								},
 								"sink": {
-									"name": "id",
-									"type": "Int32"
+									"name": "id"
 								}
 							},
 							{
@@ -49,8 +48,7 @@
 									"path": "$['name']"
 								},
 								"sink": {
-									"name": "name",
-									"type": "String"
+									"name": "name"
 								}
 							},
 							{
@@ -71,6 +69,54 @@
 							},
 							{
 								"source": {
+									"path": "$['address']['street']"
+								},
+								"sink": {
+									"name": "street"
+								}
+							},
+							{
+								"source": {
+									"path": "$['address']['suite']"
+								},
+								"sink": {
+									"name": "suite"
+								}
+							},
+							{
+								"source": {
+									"path": "$['address']['city']"
+								},
+								"sink": {
+									"name": "city"
+								}
+							},
+							{
+								"source": {
+									"path": "$['address']['zipcode']"
+								},
+								"sink": {
+									"name": "zipcode"
+								}
+							},
+							{
+								"source": {
+									"path": "$['address']['geo']['lat']"
+								},
+								"sink": {
+									"name": "lat"
+								}
+							},
+							{
+								"source": {
+									"path": "$['address']['geo']['lng']"
+								},
+								"sink": {
+									"name": "lng"
+								}
+							},
+							{
+								"source": {
 									"path": "$['phone']"
 								},
 								"sink": {
@@ -83,6 +129,30 @@
 								},
 								"sink": {
 									"name": "website"
+								}
+							},
+							{
+								"source": {
+									"path": "$['company']['name']"
+								},
+								"sink": {
+									"name": "company_name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['company']['catchPhrase']"
+								},
+								"sink": {
+									"name": "catchPhrase"
+								}
+							},
+							{
+								"source": {
+									"path": "$['company']['bs']"
+								},
+								"sink": {
+									"name": "bs"
 								}
 							}
 						],
