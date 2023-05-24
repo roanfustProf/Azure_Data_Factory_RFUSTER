@@ -40,7 +40,8 @@
 									"path": "$['country']"
 								},
 								"sink": {
-									"name": "country"
+									"name": "country",
+									"type": "String"
 								}
 							},
 							{
@@ -48,7 +49,8 @@
 									"path": "$['alpha_two_code']"
 								},
 								"sink": {
-									"name": "alpha_two_code"
+									"name": "alpha_two_code",
+									"type": "String"
 								}
 							},
 							{
@@ -56,7 +58,8 @@
 									"path": "$['name']"
 								},
 								"sink": {
-									"name": "name"
+									"name": "name",
+									"type": "String"
 								}
 							},
 							{
@@ -64,7 +67,8 @@
 									"path": "$['state-province']"
 								},
 								"sink": {
-									"name": "state-province"
+									"name": "state-province",
+									"type": "String"
 								}
 							}
 						],
