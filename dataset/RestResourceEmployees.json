@@ -1,0 +1,27 @@
+{
+	"name": "RestResourceEmployees",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestServiceAnonymousDummy",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"urlService": "https://dummy.restapiexample.com/api/v1/",
+				"nameService": {
+					"value": "@dataset().nameService",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"nameService": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "Others"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
