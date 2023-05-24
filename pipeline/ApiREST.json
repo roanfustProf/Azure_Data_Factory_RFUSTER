@@ -108,7 +108,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "asqldb_dbotbluser",
+						"referenceName": "asqldb_dbotblEmployees",
 						"type": "DatasetReference"
 					}
 				]
