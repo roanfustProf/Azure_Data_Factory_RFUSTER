@@ -16,7 +16,7 @@
 					"type": "PipelineReference"
 				},
 				"parameters": {
-					"WildcardFolderPath": "azure-data-factory-by-example-main/SampleData/Desserts4All",
+					"WildcardFolderPath": "azure-data-factory-by-example-main.zip/azure-data-factory-by-example-main/SampleData/Desserts4All",
 					"WildcardFileName": "*.csv",
 					"WilcardContainer": "sampledata",
 					"LinkedServiceConnectionSecret": "connectionStringsa1"
