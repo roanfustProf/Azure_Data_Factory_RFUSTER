@@ -1,0 +1,15 @@
+{
+	"name": "RestResourceCountries",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestServiceCountries",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Others"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
