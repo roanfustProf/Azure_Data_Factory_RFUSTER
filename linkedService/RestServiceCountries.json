@@ -1,0 +1,12 @@
+{
+	"name": "RestServiceCountries",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "http://universities.hipolabs.com/search?country=United+States",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}
