@@ -1,0 +1,16 @@
+{
+	"name": "asqlttblUsersAdequate",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase_project01rfuster",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "tblUsersAdequate"
+		}
+	}
+}
