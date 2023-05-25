@@ -1,0 +1,32 @@
+{
+	"name": "abscsvListuserReqresin",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_project01rfuster_kv",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filenamecsv": {
+				"type": "string",
+				"defaultValue": "-1"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filenamecsv",
+					"type": "Expression"
+				},
+				"folderPath": "outputrest",
+				"container": "sampledata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

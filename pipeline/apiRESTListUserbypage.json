@@ -24,16 +24,42 @@
 							"supportRFC5988": "true"
 						}
 					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
 					"enableStaging": false
 				},
 				"inputs": [
 					{
 						"referenceName": "RestRrequrestListUsers",
+						"type": "DatasetReference",
+						"parameters": {
+							"relativeURL": "/api/users?page=1"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "abscsvListuserReqresin",
 						"type": "DatasetReference"
 					}
 				]
 			}
 		],
+		"parameters": {
+			"pageUrlService": {
+				"type": "string",
+				"defaultValue": "-1"
+			}
+		},
 		"folder": {
 			"name": "Others"
 		},
