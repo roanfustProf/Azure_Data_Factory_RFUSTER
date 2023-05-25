@@ -36,6 +36,7 @@
 						"value": "@range(1, activity('Web list user page 1').output.total_pages)",
 						"type": "Expression"
 					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "Execute Pipeline1",
