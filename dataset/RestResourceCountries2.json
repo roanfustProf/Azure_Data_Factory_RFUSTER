@@ -1,0 +1,15 @@
+{
+	"name": "RestResourceCountries2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestServiceCountries2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "/v3.1/all"
+		},
+		"schema": []
+	}
+}
