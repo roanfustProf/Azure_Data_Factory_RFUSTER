@@ -22,6 +22,36 @@
 						"password": 123456
 					}
 				}
+			},
+			{
+				"name": "Web Get All Users",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Web User Login",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "http://restapi.adequateshop.com/api/users?page=1",
+					"method": "GET",
+					"headers": {
+						"Authorization": {
+							"value": "Bearer @{activity('Web User Login').output.data.Token}",
+							"type": "Expression"
+						}
+					}
+				}
 			}
 		],
 		"folder": {
