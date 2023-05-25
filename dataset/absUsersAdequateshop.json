@@ -1,0 +1,20 @@
+{
+	"name": "absUsersAdequateshop",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_project01rfuster_kv",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "usersadequate.json",
+				"folderPath": "outputrest",
+				"container": "sampledata"
+			}
+		},
+		"schema": {}
+	}
+}
