@@ -1,0 +1,32 @@
+{
+	"name": "apiRESTtoken",
+	"properties": {
+		"activities": [
+			{
+				"name": "Web User Login",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "http://restapi.adequateshop.com/api/authaccount/login",
+					"method": "POST",
+					"body": {
+						"email": "ronydeveloper@gmail.com",
+						"password": 123456
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "Others"
+		},
+		"annotations": []
+	}
+}
