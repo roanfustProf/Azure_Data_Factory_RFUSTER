@@ -30,7 +30,7 @@
 		},
 		"AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://project01rfusterkv12.vault.azure.net/"
+			"defaultValue": "https://project01rfusterkv13.vault.azure.net/"
 		},
 		"FileServerRFUSTER_properties_typeProperties_host": {
 			"type": "string",
@@ -40,24 +40,25 @@
 			"type": "string",
 			"defaultValue": "ESAN_1515497@outlook.com"
 		},
+		"RestSAdequateshop_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://restapi.adequateshop.com"
+		},
+		"RestServiceAnonymousDummy_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{concat(linkedService().urlService,linkedService().nameService)}"
+		},
+		"RestServiceCountries_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://universities.hipolabs.com/search?country=United+States"
+		},
+		"RestServiceReqresin_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://reqres.in"
+		},
 		"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "@linkedService().ConnectionSecret"
-		},
-		"LinkedIntegrationRuntime_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
-		},
-		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
-			"type": "string",
-			"defaultValue": "project01rfustersqldbs.database.windows.net"
-		},
-		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
-			"type": "string",
-			"defaultValue": "rfuster"
-		},
-		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
-			"type": "secureString"
 		},
 		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
 			"type": "string",
@@ -74,6 +75,25 @@
 		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret": {
 			"type": "string",
 			"defaultValue": "connectionStringsa1"
+		},
+		"LinkedIntegrationRuntime_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
+		},
+		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
+			"type": "string",
+			"defaultValue": "project01rfustersqldbs.database.windows.net"
+		},
+		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
+			"type": "string",
+			"defaultValue": "rfuster"
+		},
+		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
+			"type": "secureString"
+		},
+		"RestServiceCountries2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://restcountries.com/"
 		},
 		"default_properties_EnvironmentName_value": {
 			"type": "string",
@@ -3732,6 +3752,1250 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTCountries')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['country']"
+										},
+										"sink": {
+											"name": "country",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['alpha_two_code']"
+										},
+										"sink": {
+											"name": "alpha_two_code",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['name']"
+										},
+										"sink": {
+											"name": "name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['state-province']"
+										},
+										"sink": {
+											"name": "state-province",
+											"type": "String"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RestResourceCountries",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "azureSqlTableCountries",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestResourceCountries')]",
+				"[concat(variables('factoryId'), '/datasets/azureSqlTableCountries')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTEmployees')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data from rest api",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['id']"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "[['employee_name']"
+										},
+										"sink": {
+											"name": "employee_name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['employee_salary']"
+										},
+										"sink": {
+											"name": "employee_salary"
+										}
+									},
+									{
+										"source": {
+											"path": "[['employee_age']"
+										},
+										"sink": {
+											"name": "employee_age"
+										}
+									},
+									{
+										"source": {
+											"path": "[['profile_image']"
+										},
+										"sink": {
+											"name": "profile_image"
+										}
+									}
+								],
+								"collectionReference": "$['data']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RestResourceEmployees",
+								"type": "DatasetReference",
+								"parameters": {
+									"nameService": "employees"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "asqldb_dbotblEmployees",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestResourceEmployees')]",
+				"[concat(variables('factoryId'), '/datasets/asqldb_dbotblEmployees')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTListUserForeach')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web list user page 1",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://reqres.in/api/users?page=1",
+							"method": "GET",
+							"headers": {}
+						}
+					},
+					{
+						"name": "ForEach get user by page",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Web list user page 1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@range(1, activity('Web list user page 1').output.total_pages)",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "apiRESTListUserbypage",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"pageUrlService": {
+												"value": "@item()",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/apiRESTListUserbypage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTListUserForeach2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web get page 1 list users",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://reqres.in/api/users?page=1",
+							"method": "GET",
+							"headers": {}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Web get page 1 list users",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@range(1,activity('Web get page 1 list users').output.total_pages)",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "apiRESTListUserbypage2",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"relativeURLpage": {
+												"value": "@item()",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/apiRESTListUserbypage2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTListUserbypage')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['id']"
+										},
+										"sink": {
+											"name": "id"
+										}
+									},
+									{
+										"source": {
+											"path": "[['email']"
+										},
+										"sink": {
+											"name": "email"
+										}
+									},
+									{
+										"source": {
+											"path": "[['first_name']"
+										},
+										"sink": {
+											"name": "first_name"
+										}
+									},
+									{
+										"source": {
+											"path": "[['last_name']"
+										},
+										"sink": {
+											"name": "last_name"
+										}
+									},
+									{
+										"source": {
+											"path": "[['avatar']"
+										},
+										"sink": {
+											"name": "avatar"
+										}
+									}
+								],
+								"collectionReference": "$['data']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RestRrequrestListUsers",
+								"type": "DatasetReference",
+								"parameters": {
+									"relativeURL": {
+										"value": "/api/users?page=@{pipeline().parameters.pageUrlService}",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "abscsvListuserReqresin",
+								"type": "DatasetReference",
+								"parameters": {
+									"filenamecsv": {
+										"value": "listuserReqrein@{pipeline().parameters.pageUrlService}.csv",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"pageUrlService": {
+						"type": "string",
+						"defaultValue": "-1"
+					}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestRrequrestListUsers')]",
+				"[concat(variables('factoryId'), '/datasets/abscsvListuserReqresin')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTListUserbypage2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['id']"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "[['email']"
+										},
+										"sink": {
+											"name": "email",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['first_name']"
+										},
+										"sink": {
+											"name": "first_name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['last_name']"
+										},
+										"sink": {
+											"name": "last_name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['avatar']"
+										},
+										"sink": {
+											"name": "avatar"
+										}
+									}
+								],
+								"collectionReference": "$['data']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RestRrequrestListUsers",
+								"type": "DatasetReference",
+								"parameters": {
+									"relativeURL": {
+										"value": "/api/users?page=@{pipeline().parameters.relativeURLpage}",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "asqltblLisUserReqresin",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"relativeURLpage": {
+						"type": "string",
+						"defaultValue": "-1"
+					}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestRrequrestListUsers')]",
+				"[concat(variables('factoryId'), '/datasets/asqltblLisUserReqresin')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTUsers')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "id"
+										}
+									},
+									{
+										"source": {
+											"path": "$['name']"
+										},
+										"sink": {
+											"name": "name"
+										}
+									},
+									{
+										"source": {
+											"path": "$['username']"
+										},
+										"sink": {
+											"name": "username"
+										}
+									},
+									{
+										"source": {
+											"path": "$['email']"
+										},
+										"sink": {
+											"name": "email"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['street']"
+										},
+										"sink": {
+											"name": "street"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['suite']"
+										},
+										"sink": {
+											"name": "suite"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['city']"
+										},
+										"sink": {
+											"name": "city"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['zipcode']"
+										},
+										"sink": {
+											"name": "zipcode"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['geo']['lat']"
+										},
+										"sink": {
+											"name": "lat"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['geo']['lng']"
+										},
+										"sink": {
+											"name": "lng"
+										}
+									},
+									{
+										"source": {
+											"path": "$['phone']"
+										},
+										"sink": {
+											"name": "phone"
+										}
+									},
+									{
+										"source": {
+											"path": "$['website']"
+										},
+										"sink": {
+											"name": "website"
+										}
+									},
+									{
+										"source": {
+											"path": "$['company']['name']"
+										},
+										"sink": {
+											"name": "company_name"
+										}
+									},
+									{
+										"source": {
+											"path": "$['company']['catchPhrase']"
+										},
+										"sink": {
+											"name": "catchPhrase"
+										}
+									},
+									{
+										"source": {
+											"path": "$['company']['bs']"
+										},
+										"sink": {
+											"name": "bs"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RestResourceUser",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "asqldb_dbotblUser",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestResourceUser')]",
+				"[concat(variables('factoryId'), '/datasets/asqldb_dbotblUser')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTUsersToJSON')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "RestResourceUser",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "any_abs_json",
+								"type": "DatasetReference",
+								"parameters": {
+									"Container": "sampledata",
+									"File": "user.json",
+									"LinkedServiceConnectionSecret": "connectionStringsa1"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestResourceUser')]",
+				"[concat(variables('factoryId'), '/datasets/any_abs_json')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTtoken')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web User Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://restapi.adequateshop.com/api/authaccount/login",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"email": "ronydeveloper@gmail.com",
+								"password": 123456
+							}
+						}
+					},
+					{
+						"name": "Web Get All Users",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Web User Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://restapi.adequateshop.com/api/users?page=1",
+							"method": "GET",
+							"headers": {
+								"Authorization": {
+									"value": "Bearer @{activity('Web User Login').output.data.Token}",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTtoken2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web post user login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://restapi.adequateshop.com/api/authaccount/login",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"email": "ronydeveloper@gmail.com",
+								"password": 123456
+							}
+						}
+					},
+					{
+						"name": "Import users",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Web post user login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"additionalHeaders": {
+									"Authorization": {
+										"value": "Bearer @{activity('Web post user login').output.data.Token}",
+										"type": "Expression"
+									}
+								},
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "RestRUsersAdequateshop",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "absUsersAdequateshop",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestRUsersAdequateshop')]",
+				"[concat(variables('factoryId'), '/datasets/absUsersAdequateshop')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTtoken3')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Wee get token 2",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://restapi.adequateshop.com/api/authaccount/login",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"email": "ronydeveloper@gmail.com",
+								"password": 123456
+							}
+						}
+					},
+					{
+						"name": "Import users 2",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Wee get token 2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"additionalHeaders": {
+									"Authorization": {
+										"value": "Bearer @{activity('Wee get token 2').output.data.Token}",
+										"type": "Expression"
+									}
+								},
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['id']"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "[['name']"
+										},
+										"sink": {
+											"name": "name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['email']"
+										},
+										"sink": {
+											"name": "email",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['profilepicture']"
+										},
+										"sink": {
+											"name": "profilepicture"
+										}
+									},
+									{
+										"source": {
+											"path": "[['location']"
+										},
+										"sink": {
+											"name": "location"
+										}
+									},
+									{
+										"source": {
+											"path": "[['createdat']"
+										},
+										"sink": {
+											"name": "createdat"
+										}
+									}
+								],
+								"collectionReference": "$['data']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RestRUsersAdequateshop",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "asqlttblUsersAdequate",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestRUsersAdequateshop')]",
+				"[concat(variables('factoryId'), '/datasets/asqlttblUsersAdequate')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -4216,6 +5480,158 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/RestRUsersAdequateshop')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestSAdequateshop",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": "/api/users?page=1"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/RestSAdequateshop')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestResourceCountries')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestServiceCountries",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/RestServiceCountries')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestResourceEmployees')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestServiceAnonymousDummy",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"urlService": "https://dummy.restapiexample.com/api/v1/",
+						"nameService": {
+							"value": "@dataset().nameService",
+							"type": "Expression"
+						}
+					}
+				},
+				"parameters": {
+					"nameService": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/RestServiceAnonymousDummy')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestResourceUser')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestServiceAnonymousDummy",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"urlService": "https://jsonplaceholder.typicode.com/",
+						"nameService": "users"
+					}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/RestServiceAnonymousDummy')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestRrequrestListUsers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestServiceReqresin",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"relativeURL": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": {
+						"value": "@dataset().relativeURL",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/RestServiceReqresin')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/absUsersAdequateshop')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_project01rfuster_kv",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "usersadequate.json",
+						"folderPath": "outputrest",
+						"container": "sampledata"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_project01rfuster_kv')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/abs_csv_SweetTreats')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4565,6 +5981,44 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/abscsvListuserReqresin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_project01rfuster_kv",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"filenamecsv": {
+						"type": "string",
+						"defaultValue": "-1"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filenamecsv",
+							"type": "Expression"
+						},
+						"folderPath": "outputrest",
+						"container": "sampledata"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_project01rfuster_kv')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/any_abs_csv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4855,6 +6309,120 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/asqldb_dbotblEmployees')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_project01rfuster",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "tblEmployees"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_project01rfuster')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/asqldb_dbotblUser')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_project01rfuster",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "tblUser"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_project01rfuster')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/asqltblLisUserReqresin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_project01rfuster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "tblLisUserReqresin"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_project01rfuster')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/asqlttblUsersAdequate')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_project01rfuster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "tblUsersAdequate"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_project01rfuster')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azureSqlTableCountries')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_project01rfuster",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "tblCountries"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_project01rfuster')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/folder_landing_fair')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -5026,6 +6594,75 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/RestSAdequateshop')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestSAdequateshop_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestServiceAnonymousDummy')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"urlService": {
+						"type": "string",
+						"defaultValue": "https://dummy.restapiexample.com/api/v1/"
+					},
+					"nameService": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestServiceAnonymousDummy_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestServiceCountries')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestServiceCountries_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestServiceReqresin')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestServiceReqresin_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SqlServerRFUSTERBD_CONTABILIDAD')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -5100,6 +6737,49 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/FarAwayintegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RunEvery2Minutes')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "ImportSweetTreatsSales_Audit",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "ImportSTFormatFolder",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"WildcardFolderPath": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath')]",
+							"WildcardFileName": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName')]",
+							"WilcardContainer": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WilcardContainer')]",
+							"LinkedServiceConnectionSecret": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 2,
+						"startTime": "2023-05-24T13:36:00",
+						"timeZone": "SA Pacific Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/ImportSweetTreatsSales_Audit')]",
+				"[concat(variables('factoryId'), '/pipelines/ImportSTFormatFolder')]"
 			]
 		},
 		{
@@ -5439,46 +7119,197 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/RunEvery2Minutes')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
+			"name": "[concat(parameters('factoryName'), '/apiREST')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['name']['common']"
+										},
+										"sink": {
+											"name": "name_common"
+										}
+									},
+									{
+										"source": {
+											"path": "$['cca2']"
+										},
+										"sink": {
+											"name": "cca2"
+										}
+									},
+									{
+										"source": {
+											"path": "$['ccn3']"
+										},
+										"sink": {
+											"name": "ccn3"
+										}
+									},
+									{
+										"source": {
+											"path": "$['capital'][0]"
+										},
+										"sink": {
+											"name": "capital']["
+										}
+									},
+									{
+										"source": {
+											"path": "$['region']"
+										},
+										"sink": {
+											"name": "region"
+										}
+									},
+									{
+										"source": {
+											"path": "$['subregion']"
+										},
+										"sink": {
+											"name": "subregion"
+										}
+									},
+									{
+										"source": {
+											"path": "$['area']"
+										},
+										"sink": {
+											"name": "area"
+										}
+									},
+									{
+										"source": {
+											"path": "$['population']"
+										},
+										"sink": {
+											"name": "population"
+										}
+									}
+								],
+								"collectionReference": "",
+								"mapComplexValuesToString": false
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RestResourceCountries2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "asqldtblCountries2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestResourceCountries2')]",
+				"[concat(variables('factoryId'), '/datasets/asqldtblCountries2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestServiceCountries2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "ImportSweetTreatsSales_Audit",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
-							"referenceName": "ImportSTFormatFolder",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"WildcardFolderPath": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath')]",
-							"WildcardFileName": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName')]",
-							"WilcardContainer": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WilcardContainer')]",
-							"LinkedServiceConnectionSecret": "[parameters('RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret')]"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
+				"type": "RestService",
 				"typeProperties": {
-					"recurrence": {
-						"frequency": "Minute",
-						"interval": 2,
-						"startTime": "2023-05-24T13:36:00",
-						"timeZone": "SA Pacific Standard Time"
-					}
+					"url": "[parameters('RestServiceCountries2_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestResourceCountries2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RestServiceCountries2",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": "/v3.1/region/america"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/RestServiceCountries2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/asqldtblCountries2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_project01rfuster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "tblCountries2"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/ImportSweetTreatsSales_Audit')]",
-				"[concat(variables('factoryId'), '/pipelines/ImportSTFormatFolder')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_project01rfuster')]"
 			]
 		},
 		{

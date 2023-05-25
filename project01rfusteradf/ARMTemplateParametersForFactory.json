@@ -21,7 +21,7 @@
 			"value": "connectionStringsa1"
 		},
 		"AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl": {
-			"value": "https://project01rfusterkv12.vault.azure.net/"
+			"value": "https://project01rfusterkv13.vault.azure.net/"
 		},
 		"FileServerRFUSTER_properties_typeProperties_host": {
 			"value": "D:\\AZURE_DATA_FACTORY"
@@ -29,8 +29,32 @@
 		"FileServerRFUSTER_properties_typeProperties_userId": {
 			"value": "ESAN_1515497@outlook.com"
 		},
+		"RestSAdequateshop_properties_typeProperties_url": {
+			"value": "http://restapi.adequateshop.com"
+		},
+		"RestServiceAnonymousDummy_properties_typeProperties_url": {
+			"value": "@{concat(linkedService().urlService,linkedService().nameService)}"
+		},
+		"RestServiceCountries_properties_typeProperties_url": {
+			"value": "http://universities.hipolabs.com/search?country=United+States"
+		},
+		"RestServiceReqresin_properties_typeProperties_url": {
+			"value": "https://reqres.in"
+		},
 		"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
 			"value": "@linkedService().ConnectionSecret"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
+			"value": "azure-data-factory-by-example-main.zip/azure-data-factory-by-example-main/SampleData/Desserts4All"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
+			"value": "*.csv"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WilcardContainer": {
+			"value": "sampledata"
+		},
+		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret": {
+			"value": "connectionStringsa1"
 		},
 		"LinkedIntegrationRuntime_properties_typeProperties_linkedInfo_resourceId": {
 			"value": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
@@ -44,17 +68,8 @@
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"value": ""
 		},
-		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
-			"value": "azure-data-factory-by-example-main.zip/azure-data-factory-by-example-main/SampleData/Desserts4All"
-		},
-		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFileName": {
-			"value": "*.csv"
-		},
-		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WilcardContainer": {
-			"value": "sampledata"
-		},
-		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret": {
-			"value": "connectionStringsa1"
+		"RestServiceCountries2_properties_typeProperties_url": {
+			"value": "https://restcountries.com/"
 		},
 		"default_properties_EnvironmentName_value": {
 			"value": "development"

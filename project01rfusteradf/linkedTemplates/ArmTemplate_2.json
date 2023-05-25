@@ -6,6 +6,19 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "project01rfusteradf"
+		},
+		"SqlServerRFUSTERBD_CONTABILIDAD_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerRFUSTERBD_CONTABILIDAD'",
+			"defaultValue": "Integrated Security=False;Data Source=RFUSTER;Initial Catalog=BD_CONTABILIDAD;User ID=pro-cobr1"
+		},
+		"azureblobstorage_project01rfusterca_fair_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'azureblobstorage_project01rfusterca_fair'"
+		},
+		"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "@linkedService().ConnectionSecret"
 		}
 	},
 	"variables": {
@@ -13,884 +26,122 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/any_abs_json')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/SqlServerRFUSTERBD_CONTABILIDAD')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "anyblobstorage_project01rfuster_p",
-					"type": "LinkedServiceReference",
-					"parameters": {
-						"ConnectionSecret": {
-							"value": "@dataset().LinkedServiceConnectionSecret",
-							"type": "Expression"
-						}
-					}
-				},
-				"parameters": {
-					"Container": {
-						"type": "string"
-					},
-					"Directory": {
-						"type": "string",
-						"defaultValue": "."
-					},
-					"File": {
-						"type": "string",
-						"defaultValue": "."
-					},
-					"LinkedServiceConnectionSecret": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "Chapter_05"
-				},
 				"annotations": [],
-				"type": "Json",
+				"type": "SqlServer",
 				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().File",
-							"type": "Expression"
+					"connectionString": "[parameters('SqlServerRFUSTERBD_CONTABILIDAD_connectionString')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault_project01rfuster",
+							"type": "LinkedServiceReference"
 						},
-						"folderPath": {
-							"value": "@dataset().Directory",
-							"type": "Expression"
-						},
-						"container": {
-							"value": "@dataset().Container",
-							"type": "Expression"
-						}
+						"secretName": "SqlServerRFUSTERP"
 					}
 				},
-				"schema": {}
+				"connectVia": {
+					"referenceName": "LinkedIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/folder_landing_fair')]",
+			"name": "[concat(parameters('factoryName'), '/anyblobstorage_project01rfuster_p')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"ConnectionSecret": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "AzureKeyVault_project01rfuster",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": {
+							"value": "[parameters('anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName')]",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azureblobstorage_project01rfusterca_fair')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('azureblobstorage_project01rfusterca_fair_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "FarAwayintegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestResourceCountries2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "azureblobstorage_project01rfusterca_fair",
+					"referenceName": "RestServiceCountries2",
 					"type": "LinkedServiceReference"
 				},
-				"folder": {
-					"name": "Chapter_02"
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": "/v3.1/region/america"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/asqldtblCountries2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase_project01rfuster",
+					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "Binary",
+				"type": "AzureSqlTable",
+				"schema": [],
 				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "landing"
-					},
-					"compression": {
-						"type": "ZipDeflate"
-					}
+					"schema": "dbo",
+					"table": "tblCountries2"
 				}
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/TransformJollyGoodSales')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Chapter_07"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "xlsx_jollygood",
-								"type": "DatasetReference"
-							},
-							"name": "JollyGoodSales"
-						},
-						{
-							"linkedService": {
-								"referenceName": "AzureBlobStorage_project01rfusterca",
-								"type": "LinkedServiceReference"
-							},
-							"name": "ExchangeRates"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "asql_dbosalesload",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "ExcludeMonthTotal"
-						},
-						{
-							"name": "RatesToUSD"
-						},
-						{
-							"name": "LookupExchangeRate"
-						},
-						{
-							"name": "DerivedSalesValueUSD"
-						},
-						{
-							"name": "select1"
-						}
-					],
-					"scriptLines": [
-						"parameters{",
-						"     RunSeqNo as integer (-1)",
-						"}",
-						"source(output(",
-						"          Period as date,",
-						"          Product as string,",
-						"          {Unit Price} as double,",
-						"          Currency as string,",
-						"          {Units Sold} as integer",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> JollyGoodSales",
-						"source(output(",
-						"          FromCurrency as string,",
-						"          ToCurrency as string,",
-						"          Date as date,",
-						"          ExchangeRate as double",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false,",
-						"     format: 'excel',",
-						"     container: 'sampledata',",
-						"     folderPath: 'azure-data-factory-by-example-main/SampleData',",
-						"     fileName: 'ExchangeRates.xlsx',",
-						"     sheetName: 'Sheet1',",
-						"     firstRowAsHeader: true) ~> ExchangeRates",
-						"JollyGoodSales filter(Product!='Month Total') ~> ExcludeMonthTotal",
-						"ExchangeRates filter(ToCurrency=='USD') ~> RatesToUSD",
-						"ExcludeMonthTotal, RatesToUSD lookup(Currency == FromCurrency",
-						"     && Period == Date,",
-						"     multiple: true,",
-						"     broadcast: 'auto')~> LookupExchangeRate",
-						"LookupExchangeRate derive(SalesValueUSD = {Unit Price}*{Units Sold}*ExchangeRate,",
-						"          Retailer = 'Jolly Good Ltd',",
-						"          RunSeqNo = $RunSeqNo) ~> DerivedSalesValueUSD",
-						"DerivedSalesValueUSD select(mapColumn(",
-						"          SalesMonth = Period,",
-						"          Product,",
-						"          UnitsSold = {Units Sold},",
-						"          SalesValueUSD,",
-						"          Retailer,",
-						"          RunSeqNo",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"select1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          RowId as integer,",
-						"          Retailer as string,",
-						"          SalesMonth as date,",
-						"          Product as string,",
-						"          ManufacturerProductCode as string,",
-						"          SalesValueUSD as decimal(18,2),",
-						"          UnitsSold as integer,",
-						"          SourceFileName as string,",
-						"          RunSeqNo as integer",
-						"     ),",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          Retailer,",
-						"          SalesMonth,",
-						"          Product,",
-						"          SalesValueUSD,",
-						"          UnitsSold,",
-						"          RunSeqNo",
-						"     )) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UpdateProduct')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"folder": {
-					"name": "Chapter_07"
-				},
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "any_asql_table",
-								"type": "DatasetReference"
-							},
-							"name": "dboSales"
-						},
-						{
-							"dataset": {
-								"referenceName": "any_asql_table",
-								"type": "DatasetReference"
-							},
-							"name": "dboProduct"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "any_asql_table",
-								"type": "DatasetReference"
-							},
-							"name": "dboProductSink"
-						}
-					],
-					"transformations": [
-						{
-							"name": "DeriveProductFeatures"
-						},
-						{
-							"name": "EliminateDuplicates"
-						},
-						{
-							"name": "NewRowsOnly"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          RowId as integer,",
-						"          Retailer as string,",
-						"          SalesMonth as date,",
-						"          Product as string,",
-						"          SalesValueUSD as decimal(19,2),",
-						"          UnitsSold as integer,",
-						"          RunSeqNo as integer",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> dboSales",
-						"source(output(",
-						"          Product as string,",
-						"          ProductName as string,",
-						"          WeightInOunces as decimal(19,2),",
-						"          WeightInGrams as decimal(19,2)",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     isolationLevel: 'READ_UNCOMMITTED',",
-						"     format: 'table') ~> dboProduct",
-						"dboSales derive(ProductName = trim(left(Product,length(Product)- length(:WeightString))),",
-						"          WeightInOunces = toFloat(replace(:WeightString, :WeightUnit,''))/iif(:WeightUnit=='g', 28.3495,  1.0),",
-						"          WeightInGrams = toFloat( replace( :WeightString, :WeightUnit,''))/ iif( :WeightUnit=='oz', 1/28.3495, 1.0),",
-						"          WeightString := right(Product, locate(' ', reverse(Product))-1),",
-						"          WeightUnit := iif(endsWith(Product,'oz'), 'oz','g')) ~> DeriveProductFeatures",
-						"DeriveProductFeatures aggregate(groupBy(Product),",
-						"     ProductName = first(ProductName),",
-						"          each(match(startsWith(name,'Weight')), $$ = first($$))) ~> EliminateDuplicates",
-						"EliminateDuplicates, dboProduct exists(EliminateDuplicates@Product == dboProduct@Product,",
-						"     negate:true,",
-						"     broadcast: 'auto')~> NewRowsOnly",
-						"NewRowsOnly sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError',",
-						"     mapColumn(",
-						"          Product,",
-						"          ProductName,",
-						"          WeightInOunces,",
-						"          WeightInGrams",
-						"     )) ~> dboProductSink"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/wranglehandycandyparquet')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "WranglingDataFlow",
-				"folder": {
-					"name": "Chapter_09"
-				},
-				"typeProperties": {
-					"sources": [
-						{
-							"name": "ABS_PAR_HandyCandy2",
-							"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tformat: 'parquet') ~> ABS_PAR_HandyCandy2",
-							"dataset": {
-								"referenceName": "abs_par_handycandy2",
-								"type": "DatasetReference"
-							}
-						}
-					],
-					"script": "section Section1;\r\nshared ABS_PAR_HandyCandy2 = let AdfDoc = AzureStorage.BlobContents(\"https://project01rfustersa.blob.core.windows.net/output/datalake/HandyCandy2.parquet\"), Parquet = Parquet.Document(AdfDoc) in Parquet;\r\nshared UserQuery = let Source = #\"ABS_PAR_HandyCandy2\",\r\n  #\"Removed columns\" = Table.RemoveColumns(Source, {\"TransactionId\", \"StoreId\"}),\r\n  #\"Added custom\" = Table.AddColumn(#\"Removed columns\", \"EndOfPreviousMonth\", each Date.AddDays([TransactionDate],- Date.Day([TransactionDate]) )),\r\n  #\"Added custom 1\" = Table.AddColumn(#\"Added custom\", \"SalesMonth\", each Date.AddDays([EndOfPreviousMonth], 1)),\r\n  #\"Removed columns 1\" = Table.RemoveColumns(#\"Added custom 1\", {\"EndOfPreviousMonth\", \"TransactionDate\"}),\r\n  #\"Added custom 2\" = Table.AddColumn(#\"Removed columns 1\", \"ItemCount\", each 1),\r\n  #\"Grouped rows\" = Table.Group(#\"Added custom 2\", {\"Product\", \"SalesMonth\"}, {{\"SalesValueUSD\", each List.Sum([Price]), type nullable number}, {\"UnitsSold\", each List.Sum([ItemCount]), type any}}),\r\n  #\"Added custom 3\" = Table.AddColumn(#\"Grouped rows\", \"Retailer\", each \"Handy Candy\") in #\"Added custom 3\";\r\n",
-					"documentLocale": "en-us"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DescomprimirCopiarArchivos_FAIR')]",
+			"name": "[concat(parameters('factoryName'), '/ImportCandyShackSales')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Descoprimir y copiar archivos",
+						"name": "Import Sales Data",
 						"type": "Copy",
 						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings",
-									"compressionProperties": {
-										"type": "ZipDeflateReadSettings",
-										"preserveZipFileNameAsFolder": false
-									}
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "folder_landing_fair",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Folder_sampledata2",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Chapter_02"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/folder_landing_fair')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DescoprimirCopiarArchivos')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "CopiarArchivos",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings",
-									"compressionProperties": {
-										"type": "ZipDeflateReadSettings",
-										"preserveZipFileNameAsFolder": false
-									}
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "ABS_Folder_Landing",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ABS_Folder_sampledata",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Chapter_02"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ImportJollyGoodSales')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Lookup RunSeqNo",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[LogPipelineStart]",
-								"storedProcedureParameters": {
-									"Comments": {
-										"type": "String",
-										"value": {
-											"value": "@concat('Pipeline ', pipeline().Pipeline, ' ejecutado en ', pipeline().DataFactory)",
-											"type": "Expression"
-										}
-									},
-									"PipelineRunId": {
-										"type": "Guid",
-										"value": {
-											"value": "@pipeline().RunId",
-											"type": "Expression"
-										}
-									},
-									"RunStartDateTime": {
-										"type": "DateTime",
-										"value": {
-											"value": "@utcnow()",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "asql_dbosalesload",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Set RunSeqNo",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Lookup RunSeqNo",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "RunSeqNo",
-							"value": {
-								"value": "@string(activity('Lookup RunSeqNo').output.firstRow.RunSeqEnd)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Import sales data",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Set RunSeqNo",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "TransformJollyGoodSales",
-								"type": "DataFlowReference",
-								"parameters": {
-									"RunSeqNo": {
-										"value": "@int(variables('RunSeqNo'))",
-										"type": "Expression"
-									}
-								},
-								"datasetParameters": {
-									"JollyGoodSales": {},
-									"ExchangeRates": {},
-									"sink1": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					},
-					{
-						"name": "Log pipeline outcome",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Datos permanentes",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[LogPipelineEnd]",
-							"storedProcedureParameters": {
-								"FilesRead": {
-									"value": {
-										"value": "0",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsCopied": {
-									"value": {
-										"value": "0",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsRead": {
-									"value": {
-										"value": "0",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunEndDateTime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"RunSeqNo": {
-									"value": {
-										"value": "@variables('RunSeqNo')",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunStatus": {
-									"value": "Done",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase_project01rfuster",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Datos permanentes",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Import sales data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[PersistLoadedSales]",
-							"storedProcedureParameters": {
-								"runSeqNo": {
-									"value": {
-										"value": "@variables('RunSeqNo')",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase_project01rfuster",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"variables": {
-					"RunSeqNo": {
-						"type": "String",
-						"defaultValue": "-1"
-					}
-				},
-				"folder": {
-					"name": "Chapter_07"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/TransformJollyGoodSales')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ImportSTFormatFile')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Lookup RunSeqNo",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[LogPipelineStart]",
-								"storedProcedureParameters": {
-									"Comments": {
-										"type": "String",
-										"value": {
-											"value": "@concat('Pipeline ', pipeline().Pipeline, ' ejecutado en ', pipeline().DataFactory, ' cargando archivo ',pipeline().parameters.Directory,'\\', pipeline().parameters.File)",
-											"type": "Expression"
-										}
-									},
-									"PipelineRunId": {
-										"type": "Guid",
-										"value": {
-											"value": "@pipeline().RunId",
-											"type": "Expression"
-										}
-									},
-									"RunStartDateTime": {
-										"type": "DateTime",
-										"value": {
-											"value": "@utcnow()",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "asql_dbosalesload",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Set RunSeqNo",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Lookup RunSeqNo",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "RunSeqNo",
-							"value": {
-								"value": "@string(activity('Lookup RunSeqNo').output.firstRow.RunSeqEnd)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Log pipeline outcome",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Import sales data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[LogPipelineEnd]",
-							"storedProcedureParameters": {
-								"FilesRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.filesRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsCopied": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsCopied",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunEndDateTime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"RunSeqNo": {
-									"value": {
-										"value": "@variables('RunSeqNo')",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunStatus": {
-									"value": "Done",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase_project01rfuster",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Import sales data",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Set RunSeqNo",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -902,30 +153,11 @@
 						"typeProperties": {
 							"source": {
 								"type": "DelimitedTextSource",
-								"additionalColumns": [
-									{
-										"name": "SourceFileName",
-										"value": "$$FILEPATH"
-									},
-									{
-										"name": "RunSeqNo",
-										"value": {
-											"value": "@variables('RunSeqNo')",
-											"type": "Expression"
-										}
-									}
-								],
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": {
-										"value": "@pipeline().parameters.Directory",
-										"type": "Expression"
-									},
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.File",
-										"type": "Expression"
-									},
+									"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/CandyShack",
+									"wildcardFileName": "*.csv",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -934,7 +166,7 @@
 							},
 							"sink": {
 								"type": "AzureSqlSink",
-								"preCopyScript": "TRUNCATE TABLE  [dbo].[Sales_LOAD]",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[Sales_LOAD]",
 								"writeBehavior": "insert",
 								"sqlWriterUseTableLock": false,
 								"disableMetricsCollection": false
@@ -942,626 +174,126 @@
 							"enableStaging": false,
 							"translator": {
 								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "any_abs_csv",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "sampledata",
-									"Directory": {
-										"value": "@pipeline().parameters.Directory",
-										"type": "Expression"
-									},
-									"File": {
-										"value": "@pipeline().parameters.File",
-										"type": "Expression"
-									},
-									"LinkedServiceConnectionSecret": "connectionStringsa1"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "asql_dbosalesload",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Log pipeline failure",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Import sales data",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[LogPipelineEnd]",
-							"storedProcedureParameters": {
-								"FilesRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.filesRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsCopied": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsCopied",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunEndDateTime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"RunSeqNo": {
-									"value": {
-										"value": "@variables('RunSeqNo')",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunStatus": {
-									"value": "Failed",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase_project01rfuster",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"Directory": {
-						"type": "string"
-					},
-					"File": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"RunSeqNo": {
-						"type": "String",
-						"defaultValue": "-1"
-					}
-				},
-				"folder": {
-					"name": "Chapter_06"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ImportSTFormatFile_Divert')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Lookup RunSeqNo",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[LogPipelineStart]",
-								"storedProcedureParameters": {
-									"Comments": {
-										"type": "String",
-										"value": {
-											"value": "@concat('Pipeline ', pipeline().Pipeline, ' ejecutado en ', pipeline().DataFactory, ' cargando archivo ',pipeline().parameters.Directory,'\\', pipeline().parameters.File)",
-											"type": "Expression"
-										}
-									},
-									"PipelineRunId": {
-										"type": "Guid",
-										"value": {
-											"value": "@pipeline().RunId",
-											"type": "Expression"
-										}
-									},
-									"RunStartDateTime": {
-										"type": "DateTime",
-										"value": {
-											"value": "@utcnow()",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "asql_dbosalesload",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Set RunSeqNo",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Lookup RunSeqNo",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "RunSeqNo",
-							"value": {
-								"value": "@string(activity('Lookup RunSeqNo').output.firstRow.RunSeqEnd)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Log pipeline outcome",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "If  rows skipped",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[LogPipelineEnd]",
-							"storedProcedureParameters": {
-								"FilesRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.filesRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsCopied": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsCopied",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunEndDateTime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"RunSeqNo": {
-									"value": {
-										"value": "@variables('RunSeqNo')",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunStatus": {
-									"value": "Done",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase_project01rfuster",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Import sales data",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Set RunSeqNo",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"additionalColumns": [
+								"mappings": [
 									{
-										"name": "SourceFileName",
-										"value": "$$FILEPATH"
-									},
-									{
-										"name": "RunSeqNo",
-										"value": {
-											"value": "@variables('RunSeqNo')",
-											"type": "Expression"
-										}
-									}
-								],
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": {
-										"value": "@pipeline().parameters.Directory",
-										"type": "Expression"
-									},
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.File",
-										"type": "Expression"
-									},
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"enableSkipIncompatibleRow": true,
-							"logSettings": {
-								"enableCopyActivityLog": true,
-								"copyActivityLogSettings": {
-									"logLevel": "Warning",
-									"enableReliableLogging": false
-								},
-								"logLocationSettings": {
-									"linkedServiceName": {
-										"referenceName": "AzureBlobStorage_project01rfuster_kv",
-										"type": "LinkedServiceReference"
-									},
-									"path": "output/errors"
-								}
-							},
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "any_abs_csv",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "sampledata",
-									"Directory": {
-										"value": "@pipeline().parameters.Directory",
-										"type": "Expression"
-									},
-									"File": {
-										"value": "@pipeline().parameters.File",
-										"type": "Expression"
-									},
-									"LinkedServiceConnectionSecret": "connectionStringsa1"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "any_asql_table",
-								"type": "DatasetReference",
-								"parameters": {
-									"Par_table": "Sales_LOAD",
-									"Par_esquema": "dbo"
-								}
-							}
-						]
-					},
-					{
-						"name": "Log pipeline failure",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Import sales data",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[LogPipelineEnd]",
-							"storedProcedureParameters": {
-								"FilesRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.filesRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsCopied": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsCopied",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunEndDateTime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"RunSeqNo": {
-									"value": {
-										"value": "@variables('RunSeqNo')",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunStatus": {
-									"value": "Failed",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase_project01rfuster",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "If  rows skipped",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "Datos permanentes",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@greater( activity('Import sales data').output.rowsSkipped, 0)",
-								"type": "Expression"
-							},
-							"ifTrueActivities": [
-								{
-									"name": "Copy data1",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
 										"source": {
-											"type": "DelimitedTextSource",
-											"storeSettings": {
-												"type": "AzureBlobStorageReadSettings",
-												"recursive": true,
-												"wildcardFolderPath": {
-													"value": "@join(skip(split(activity('Import sales data').output.logFilePath, '/'), 1), '/')",
-													"type": "Expression"
-												},
-												"wildcardFileName": "*",
-												"enablePartitionDiscovery": false
-											},
-											"formatSettings": {
-												"type": "DelimitedTextReadSettings"
-											}
+											"name": "Retailer",
+											"type": "String",
+											"physicalType": "String"
 										},
 										"sink": {
-											"type": "AzureSqlSink",
-											"writeBehavior": "insert",
-											"sqlWriterUseTableLock": false
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
+											"name": "Retailer",
+											"type": "String",
+											"physicalType": "nvarchar"
 										}
 									},
-									"inputs": [
-										{
-											"referenceName": "any_abs_csv",
-											"type": "DatasetReference",
-											"parameters": {
-												"Container": "output",
-												"Directory": {
-													"value": "@join(skip(split(activity('Import sales data').output.logFilePath, '/'), 1), '/')",
-													"type": "Expression"
-												},
-												"File": "*",
-												"LinkedServiceConnectionSecret": "connectionStringsa1"
-											}
+									{
+										"source": {
+											"name": "SalesMonth",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SalesMonth",
+											"type": "DateTime",
+											"physicalType": "date"
 										}
-									],
-									"outputs": [
-										{
-											"referenceName": "asql_dboloadingerror",
-											"type": "DatasetReference",
-											"parameters": {
-												"tableName": "LoadingError",
-												"schemaTableName": "dbo"
-											}
+									},
+									{
+										"source": {
+											"name": "Product",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Product",
+											"type": "String",
+											"physicalType": "nvarchar"
 										}
-									]
+									},
+									{
+										"source": {
+											"name": "SkuCode",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ManufacturerProductCode",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SalesValue",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SalesValueUSD",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "UnitsSold",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "UnitsSold",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
 								}
-							]
-						}
-					},
-					{
-						"name": "Datos permanentes",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
+							}
+						},
+						"inputs": [
 							{
-								"activity": "Import sales data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
+								"referenceName": "abs_csv_candyshack",
+								"type": "DatasetReference",
+								"parameters": {}
 							}
 						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[PersistLoadedSales]",
-							"storedProcedureParameters": {
-								"runSeqNo": {
-									"value": {
-										"value": "@variables('RunSeqNo')",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								}
+						"outputs": [
+							{
+								"referenceName": "asql_dbosalesload",
+								"type": "DatasetReference",
+								"parameters": {}
 							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase_project01rfuster",
-							"type": "LinkedServiceReference"
-						}
+						]
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"parameters": {
-					"Directory": {
-						"type": "string"
-					},
-					"File": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"RunSeqNo": {
-						"type": "String",
-						"defaultValue": "-1"
-					}
-				},
 				"folder": {
-					"name": "Chapter_06"
+					"name": "Chapter_03"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ImportSTFormatFolder')]",
+			"name": "[concat(parameters('factoryName'), '/ImportHandyCandySales')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Import sales data",
+						"name": "Copy data1",
 						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Set RunSeqNo",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -1572,35 +304,14 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "DelimitedTextSource",
-								"additionalColumns": [
-									{
-										"name": "SourceFileName",
-										"value": "$$FILEPATH"
-									},
-									{
-										"name": "RunSeqNo",
-										"value": {
-											"value": "@variables('RunSeqNo')",
-											"type": "Expression"
-										}
-									}
-								],
+								"type": "ParquetSource",
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": {
-										"value": "@pipeline().parameters.WildcardFolderPath",
-										"type": "Expression"
-									},
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.WildcardFileName",
-										"type": "Expression"
-									},
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
+									"type": "ParquetReadSettings"
 								}
 							},
 							"sink": {
@@ -1613,6 +324,46 @@
 							"enableStaging": false,
 							"translator": {
 								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "TransactionDate",
+											"type": "DateTime",
+											"physicalType": "INT96"
+										},
+										"sink": {
+											"name": "SalesMonth",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "Product",
+											"type": "String",
+											"physicalType": "UTF8"
+										},
+										"sink": {
+											"name": "Product",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Price",
+											"type": "Single",
+											"physicalType": "FLOAT"
+										},
+										"sink": {
+											"name": "SalesValueUSD",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										}
+									}
+								],
 								"typeConversion": true,
 								"typeConversionSettings": {
 									"allowDataTruncation": true,
@@ -1622,26 +373,9 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "any_abs_csv",
+								"referenceName": "abs_par_handycandy",
 								"type": "DatasetReference",
-								"parameters": {
-									"Container": {
-										"value": "@pipeline().parameters.WilcardContainer",
-										"type": "Expression"
-									},
-									"Directory": {
-										"value": "@pipeline().parameters.WildcardFolderPath",
-										"type": "Expression"
-									},
-									"File": {
-										"value": "@pipeline().parameters.WildcardFileName",
-										"type": "Expression"
-									},
-									"LinkedServiceConnectionSecret": {
-										"value": "@pipeline().parameters.LinkedServiceConnectionSecret",
-										"type": "Expression"
-									}
-								}
+								"parameters": {}
 							}
 						],
 						"outputs": [
@@ -1651,575 +385,27 @@
 								"parameters": {}
 							}
 						]
-					},
-					{
-						"name": "Set RunSeqNo",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Lookup RunSeqNo",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "RunSeqNo",
-							"value": {
-								"value": "@string(activity('Lookup RunSeqNo').output.firstRow.RunSeqEnd)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Lookup RunSeqNo",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[LogPipelineStart]",
-								"storedProcedureParameters": {
-									"Comments": {
-										"type": "String",
-										"value": {
-											"value": "@concat('Pipeline ',pipeline().Pipeline, ' ejecutado en ',pipeline().DataFactory)",
-											"type": "Expression"
-										}
-									},
-									"PipelineRunId": {
-										"type": "Guid",
-										"value": {
-											"value": "@pipeline().RunId",
-											"type": "Expression"
-										}
-									},
-									"RunStartDateTime": {
-										"type": "DateTime",
-										"value": {
-											"value": "@utcnow()",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "asql_dbosalesload",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Log pipeline outcome",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Import sales data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[LogPipelineEnd]",
-							"storedProcedureParameters": {
-								"FilesRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.filesRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsCopied": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsCopied",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunEndDateTime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"RunSeqNo": {
-									"value": {
-										"value": "@variables('RunSeqNo')",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunStatus": {
-									"value": "Done",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase_project01rfuster",
-							"type": "LinkedServiceReference"
-						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"parameters": {
-					"WildcardFolderPath": {
-						"type": "string"
-					},
-					"WildcardFileName": {
-						"type": "string",
-						"defaultValue": "*.csv"
-					},
-					"WilcardContainer": {
-						"type": "string",
-						"defaultValue": "sampledata"
-					},
-					"LinkedServiceConnectionSecret": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"RunSeqNo": {
-						"type": "String",
-						"defaultValue": "-1"
-					}
-				},
 				"folder": {
-					"name": "Chapter_05"
+					"name": "Chapter_03"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ImportSugarCubeSales_Audit')]",
+			"name": "[concat(parameters('factoryName'), '/ImportSugarCubeSales')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Import sales data",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Set RunSeqNo",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "JsonSource",
-								"additionalColumns": [
-									{
-										"name": "SourceFileName",
-										"value": "$$FILEPATH"
-									},
-									{
-										"name": "RunSeqNo",
-										"value": {
-											"value": "@variables('RunSeqNo')",
-											"type": "Expression"
-										}
-									}
-								],
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": {
-										"value": "@pipeline().parameters.Directory",
-										"type": "Expression"
-									},
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.File",
-										"type": "Expression"
-									},
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "JsonReadSettings"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"preCopyScript": "TRUNCATE TABLE  [dbo].[Sales_LOAD]",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "[['ManufacturerProductCode']"
-										},
-										"sink": {
-											"name": "ManufacturerProductCode"
-										}
-									},
-									{
-										"source": {
-											"path": "[['Units']"
-										},
-										"sink": {
-											"name": "UnitsSold"
-										}
-									},
-									{
-										"source": {
-											"path": "[['Value']"
-										},
-										"sink": {
-											"name": "SalesValueUSD"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Month']"
-										},
-										"sink": {
-											"name": "SalesMonth"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Company']"
-										},
-										"sink": {
-											"name": "Retailer"
-										}
-									},
-									{
-										"source": {
-											"path": "$['SourceFileName']"
-										},
-										"sink": {
-											"name": "SourceFileName"
-										}
-									},
-									{
-										"source": {
-											"path": "$['RunSeqNo']"
-										},
-										"sink": {
-											"name": "RunSeqNo"
-										}
-									}
-								],
-								"collectionReference": "$['Sales']",
-								"mapComplexValuesToString": false
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "abs_json",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "sampledata",
-									"Directory": {
-										"value": "@pipeline().parameters.Directory",
-										"type": "Expression"
-									},
-									"File": {
-										"value": "@pipeline().parameters.File",
-										"type": "Expression"
-									}
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "asql_dbosalesload",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Log pipeline outcome",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Import sales data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[LogPipelineEnd]",
-							"storedProcedureParameters": {
-								"FilesRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.filesRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsCopied": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsCopied",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunEndDateTime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"RunSeqNo": {
-									"value": {
-										"value": "@variables('RunSeqNo')",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunStatus": {
-									"value": "Done",
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase_project01rfuster",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Set RunSeqNo",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Lookup RunSeqNo",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "RunSeqNo",
-							"value": {
-								"value": "@string(activity('Lookup RunSeqNo').output.firstRow.RunSeqEnd)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Lookup RunSeqNo",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[LogPipelineStart]",
-								"storedProcedureParameters": {
-									"Comments": {
-										"type": "String",
-										"value": {
-											"value": "@concat('Pipeline ', pipeline().Pipeline, ' ejecutado en ', pipeline().DataFactory, ' cargando archivo ', pipeline().parameters.Directory,'\\', pipeline().parameters.File)",
-											"type": "Expression"
-										}
-									},
-									"PipelineRunId": {
-										"type": "Guid",
-										"value": {
-											"value": "@pipeline().RunId",
-											"type": "Expression"
-										}
-									},
-									"RunStartDateTime": {
-										"type": "DateTime",
-										"value": {
-											"value": "@utcnow()",
-											"type": "Expression"
-										}
-									}
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "asql_dbosalesload",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Log pipeline failure",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "Import sales data",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[LogPipelineEnd]",
-							"storedProcedureParameters": {
-								"FilesRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.filesRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsCopied": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsCopied",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RowsRead": {
-									"value": {
-										"value": "@activity('Import sales data').output.rowsRead",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunEndDateTime": {
-									"value": {
-										"value": "@utcnow()",
-										"type": "Expression"
-									},
-									"type": "DateTime"
-								},
-								"RunSeqNo": {
-									"value": {
-										"value": "@variables('RunSeqNo')",
-										"type": "Expression"
-									},
-									"type": "Int32"
-								},
-								"RunStatus": {
-									"value": {
-										"value": "Failed",
-										"type": "Expression"
-									},
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "AzureSqlDatabase_project01rfuster",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"Directory": {
-						"type": "string"
-					},
-					"File": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"RunSeqNo": {
-						"type": "String",
-						"defaultValue": "-1"
-					}
-				},
-				"folder": {
-					"name": "Chapter_06"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ImportSugarCubeSales_P')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
+						"name": "Import Sales Data",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2315,13 +501,9 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "abs_json",
+								"referenceName": "abs_json_sugarcube",
 								"type": "DatasetReference",
-								"parameters": {
-									"Container": "sampledata",
-									"Directory": ".",
-									"File": "."
-								}
+								"parameters": {}
 							}
 						],
 						"outputs": [
@@ -2338,14 +520,14 @@
 					"cancelAfter": {}
 				},
 				"folder": {
-					"name": "Chapter_05"
+					"name": "Chapter_03"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ImportSugarCubeSales_P2')]",
+			"name": "[concat(parameters('factoryName'), '/ImportSweetTreatsSales')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -2364,21 +546,21 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "JsonSource",
+								"type": "DelimitedTextSource",
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SugarCube",
-									"wildcardFileName": "*.json",
+									"wildcardFolderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats",
+									"wildcardFileName": "*.csv",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
-									"type": "JsonReadSettings"
+									"type": "DelimitedTextReadSettings"
 								}
 							},
 							"sink": {
 								"type": "AzureSqlSink",
-								"preCopyScript": "TRUNCATE TABLE [dbo].[Sales_LOAD]",
+								"preCopyScript": "Truncate table dbo.Sales_LOAD",
 								"writeBehavior": "insert",
 								"sqlWriterUseTableLock": false,
 								"disableMetricsCollection": false
@@ -2389,72 +571,79 @@
 								"mappings": [
 									{
 										"source": {
-											"path": "[['Product']"
-										},
-										"sink": {
-											"name": "Product",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "[['ManufacturerProductCode']"
-										},
-										"sink": {
-											"name": "ManufacturerProductCode",
-											"type": "String"
-										}
-									},
-									{
-										"source": {
-											"path": "[['Units']"
-										},
-										"sink": {
-											"name": "UnitsSold",
-											"type": "Int32"
-										}
-									},
-									{
-										"source": {
-											"path": "[['Value']"
-										},
-										"sink": {
-											"name": "SalesValueUSD",
-											"type": "Decimal"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Month']"
-										},
-										"sink": {
-											"name": "SalesMonth",
-											"type": "DateTime"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Company']"
+											"name": "Retailer",
+											"type": "String",
+											"physicalType": "String"
 										},
 										"sink": {
 											"name": "Retailer",
-											"type": "String"
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SalesMonth",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SalesMonth",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "Product",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Product",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SalesValueUSD",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SalesValueUSD",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "UnitsSold",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "UnitsSold",
+											"type": "Int32",
+											"physicalType": "int"
 										}
 									}
 								],
-								"collectionReference": "$['Sales']"
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
 							}
 						},
 						"inputs": [
 							{
-								"referenceName": "any_abs_json",
+								"referenceName": "abs_csv_SweetTreats",
 								"type": "DatasetReference",
-								"parameters": {
-									"Container": "sampledata",
-									"Directory": ".",
-									"File": ".",
-									"LinkedServiceConnectionSecret": "StorageAccountConnectionString2"
-								}
+								"parameters": {}
 							}
 						],
 						"outputs": [
@@ -2471,16 +660,253 @@
 					"cancelAfter": {}
 				},
 				"folder": {
-					"name": "Chapter_05"
+					"name": "Chapter_03"
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/any_abs_json')]"
-			]
+			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/IngestHandyCandyMessages_P')]",
+			"name": "[concat(parameters('factoryName'), '/ImportSweetTreatsSales_Audit')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Import sales data",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Set RunSeqNo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"additionalColumns": [
+									{
+										"name": "SourceFileName",
+										"value": "$$FILEPATH"
+									},
+									{
+										"name": "RunSeqNo",
+										"value": {
+											"value": "@variables('RunSeqNo')",
+											"type": "Expression"
+										}
+									}
+								],
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "azure-data-factory-by-example-main.zip/azure-data-factory-by-example-main/SampleData/SweetTreats",
+									"wildcardFileName": "*.csv",
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE dbo.Sales_LOAD",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "abs_csv_SweetTreats",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "asql_dbosalesload",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Log pipeline outcome",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "Import sales data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[LogPipelineEnd]",
+							"storedProcedureParameters": {
+								"FilesRead": {
+									"value": {
+										"value": "@activity('Import sales data').output.filesRead",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"RowsCopied": {
+									"value": {
+										"value": "@activity('Import sales data').output.rowsCopied",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"RowsRead": {
+									"value": {
+										"value": "@activity('Import sales data').output.rowsRead",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"RunEndDateTime": {
+									"value": {
+										"value": "@utcnow()",
+										"type": "Expression"
+									},
+									"type": "DateTime"
+								},
+								"RunSeqNo": {
+									"value": {
+										"value": "@variables('RunSeqNo')",
+										"type": "Expression"
+									},
+									"type": "Int32"
+								},
+								"RunStatus": {
+									"value": "Done",
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "AzureSqlDatabase_project01rfuster",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Lookup RunSeqNo",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[LogPipelineStart]",
+								"storedProcedureParameters": {
+									"Comments": {
+										"type": "String",
+										"value": {
+											"value": "@concat('Pipeline ',pipeline().Pipeline,' ejecutado en ',pipeline().DataFactory)",
+											"type": "Expression"
+										}
+									},
+									"PipelineRunId": {
+										"type": "Guid",
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										}
+									},
+									"RunStartDateTime": {
+										"type": "DateTime",
+										"value": {
+											"value": "@utcnow()",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "asql_dbosalesload",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Set RunSeqNo",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Lookup RunSeqNo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RunSeqNo",
+							"value": {
+								"value": "@string(activity('Lookup RunSeqNo').output.firstRow.RunSeqEnd)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"RunSeqNo": {
+						"type": "String",
+						"defaultValue": "-1"
+					}
+				},
+				"folder": {
+					"name": "Chapter_04"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IngestHandyCandyMessages')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -2521,17 +947,64 @@
 									"type": "ParquetWriteSettings"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['Product']"
+										},
+										"sink": {
+											"name": "Product",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['Price']"
+										},
+										"sink": {
+											"name": "Price",
+											"type": "Single"
+										}
+									},
+									{
+										"source": {
+											"path": "$['TransactionId']"
+										},
+										"sink": {
+											"name": "TransactionId",
+											"type": "Guid"
+										}
+									},
+									{
+										"source": {
+											"path": "$['TransactionDate']"
+										},
+										"sink": {
+											"name": "TransactionDate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"path": "$['StoreId']"
+										},
+										"sink": {
+											"name": "StoreId",
+											"type": "Int16"
+										}
+									}
+								],
+								"collectionReference": "$['Items']"
+							}
 						},
 						"inputs": [
 							{
-								"referenceName": "abs_json",
+								"referenceName": "abs_json_handycandy",
 								"type": "DatasetReference",
-								"parameters": {
-									"Container": "sampledata",
-									"Directory": ".",
-									"File": "."
-								}
+								"parameters": {}
 							}
 						],
 						"outputs": [
@@ -2548,21 +1021,20 @@
 					"cancelAfter": {}
 				},
 				"folder": {
-					"name": "Chapter_05"
+					"name": "Chapter_03"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/NewCopyData')]",
+			"name": "[concat(parameters('factoryName'), '/apiRESTCountries')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
 						"name": "Copy data1",
-						"description": "prueba",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -2575,37 +1047,75 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings",
-									"compressionProperties": {
-										"type": "ZipDeflateReadSettings",
-										"preserveZipFileNameAsFolder": false
-									}
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
 								}
 							},
 							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['country']"
+										},
+										"sink": {
+											"name": "country",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['alpha_two_code']"
+										},
+										"sink": {
+											"name": "alpha_two_code",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['name']"
+										},
+										"sink": {
+											"name": "name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "$['state-province']"
+										},
+										"sink": {
+											"name": "state-province",
+											"type": "String"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
 						},
 						"inputs": [
 							{
-								"referenceName": "ABS_Folder_Landing",
+								"referenceName": "RestResourceCountries",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "ABS_Folder_sampledata",
+								"referenceName": "azureSqlTableCountries",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -2617,21 +1127,21 @@
 					"cancelAfter": {}
 				},
 				"folder": {
-					"name": "Chapter_10"
+					"name": "Others"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/UpdateProductDimension')]",
+			"name": "[concat(parameters('factoryName'), '/apiRESTEmployees')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "UpdateProduct",
-						"type": "ExecuteDataFlow",
+						"name": "Copy data from rest api",
+						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -2642,32 +1152,631 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"dataflow": {
-								"referenceName": "UpdateProduct",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"dboSales": {
-										"Par_table": "Sales",
-										"Par_esquema": "dbo"
-									},
-									"dboProduct": {
-										"Par_table": "Product",
-										"Par_esquema": "dbo"
-									},
-									"dboProductSink": {
-										"Par_table": "Product",
-										"Par_esquema": "dbo"
-									}
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
 								}
 							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
 							},
-							"traceLevel": "Fine"
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['id']"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "[['employee_name']"
+										},
+										"sink": {
+											"name": "employee_name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['employee_salary']"
+										},
+										"sink": {
+											"name": "employee_salary"
+										}
+									},
+									{
+										"source": {
+											"path": "[['employee_age']"
+										},
+										"sink": {
+											"name": "employee_age"
+										}
+									},
+									{
+										"source": {
+											"path": "[['profile_image']"
+										},
+										"sink": {
+											"name": "profile_image"
+										}
+									}
+								],
+								"collectionReference": "$['data']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RestResourceEmployees",
+								"type": "DatasetReference",
+								"parameters": {
+									"nameService": "employees"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "asqldb_dbotblEmployees",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTListUserbypage2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['id']"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "[['email']"
+										},
+										"sink": {
+											"name": "email",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['first_name']"
+										},
+										"sink": {
+											"name": "first_name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['last_name']"
+										},
+										"sink": {
+											"name": "last_name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['avatar']"
+										},
+										"sink": {
+											"name": "avatar"
+										}
+									}
+								],
+								"collectionReference": "$['data']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RestRrequrestListUsers",
+								"type": "DatasetReference",
+								"parameters": {
+									"relativeURL": {
+										"value": "/api/users?page=@{pipeline().parameters.relativeURLpage}",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "asqltblLisUserReqresin",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"relativeURLpage": {
+						"type": "string",
+						"defaultValue": "-1"
+					}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTUsers')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['id']"
+										},
+										"sink": {
+											"name": "id"
+										}
+									},
+									{
+										"source": {
+											"path": "$['name']"
+										},
+										"sink": {
+											"name": "name"
+										}
+									},
+									{
+										"source": {
+											"path": "$['username']"
+										},
+										"sink": {
+											"name": "username"
+										}
+									},
+									{
+										"source": {
+											"path": "$['email']"
+										},
+										"sink": {
+											"name": "email"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['street']"
+										},
+										"sink": {
+											"name": "street"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['suite']"
+										},
+										"sink": {
+											"name": "suite"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['city']"
+										},
+										"sink": {
+											"name": "city"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['zipcode']"
+										},
+										"sink": {
+											"name": "zipcode"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['geo']['lat']"
+										},
+										"sink": {
+											"name": "lat"
+										}
+									},
+									{
+										"source": {
+											"path": "$['address']['geo']['lng']"
+										},
+										"sink": {
+											"name": "lng"
+										}
+									},
+									{
+										"source": {
+											"path": "$['phone']"
+										},
+										"sink": {
+											"name": "phone"
+										}
+									},
+									{
+										"source": {
+											"path": "$['website']"
+										},
+										"sink": {
+											"name": "website"
+										}
+									},
+									{
+										"source": {
+											"path": "$['company']['name']"
+										},
+										"sink": {
+											"name": "company_name"
+										}
+									},
+									{
+										"source": {
+											"path": "$['company']['catchPhrase']"
+										},
+										"sink": {
+											"name": "catchPhrase"
+										}
+									},
+									{
+										"source": {
+											"path": "$['company']['bs']"
+										},
+										"sink": {
+											"name": "bs"
+										}
+									}
+								],
+								"collectionReference": ""
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RestResourceUser",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "asqldb_dbotblUser",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTtoken3')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Wee get token 2",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://restapi.adequateshop.com/api/authaccount/login",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"email": "ronydeveloper@gmail.com",
+								"password": 123456
+							}
 						}
+					},
+					{
+						"name": "Import users 2",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Wee get token 2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"additionalHeaders": {
+									"Authorization": {
+										"value": "Bearer @{activity('Wee get token 2').output.data.Token}",
+										"type": "Expression"
+									}
+								},
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "[['id']"
+										},
+										"sink": {
+											"name": "id",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"path": "[['name']"
+										},
+										"sink": {
+											"name": "name",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['email']"
+										},
+										"sink": {
+											"name": "email",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"path": "[['profilepicture']"
+										},
+										"sink": {
+											"name": "profilepicture"
+										}
+									},
+									{
+										"source": {
+											"path": "[['location']"
+										},
+										"sink": {
+											"name": "location"
+										}
+									},
+									{
+										"source": {
+											"path": "[['createdat']"
+										},
+										"sink": {
+											"name": "createdat"
+										}
+									}
+								],
+								"collectionReference": "$['data']"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "RestRUsersAdequateshop",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "asqlttblUsersAdequate",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "abs_csv_SweetTreats",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "asql_dbosalesload",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -2679,19 +1788,17 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/UpdateProduct')]"
-			]
+			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/WrangleHandyCandyParquet')]",
+			"name": "[concat(parameters('factoryName'), '/pipeline4')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Power Query1",
-						"type": "ExecuteWranglingDataflow",
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -2702,102 +1809,12 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"dataflow": {
-								"referenceName": "wranglehandycandyparquet",
-								"type": "DataFlowReference",
-								"datasetParameters": {
-									"ABS_PAR_HandyCandy2": {},
-									"UserQueryASQLdboSalesLoad": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"queries": [
-								{
-									"queryName": "UserQuery",
-									"dataflowSinks": [
-										{
-											"name": "UserQueryASQLdboSalesLoad",
-											"dataset": {
-												"referenceName": "asql_dbosalesload",
-												"type": "DatasetReference",
-												"parameters": {}
-											},
-											"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tRowId as integer,\n\t\tRetailer as string,\n\t\tSalesMonth as date,\n\t\tProduct as string,\n\t\tManufacturerProductCode as string,\n\t\tSalesValueUSD as decimal(18,2),\n\t\tUnitsSold as integer,\n\t\tSourceFileName as string,\n\t\tRunSeqNo as integer\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> UserQueryASQLdboSalesLoad"
-										}
-									]
-								}
-							]
+							"storedProcedureName": "USP_PRUEBA1"
+						},
+						"linkedServiceName": {
+							"referenceName": "SqlServerRFUSTERBD_CONTABILIDAD",
+							"type": "LinkedServiceReference"
 						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "Chapter_09"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/wranglehandycandyparquet')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline3')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "FileServerReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "FS_FolderADF",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ABS_Folder_Landing",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
 					}
 				],
 				"policy": {
@@ -2809,118 +1826,58 @@
 				},
 				"annotations": []
 			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServerRFUSTERBD_CONTABILIDAD')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ABS_Folder_Landing')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_project01rfuster_kv",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "Chapter_02"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "landing"
+					},
+					"compression": {
+						"type": "ZipDeflate"
+					}
+				}
+			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ImportSTFormatFiles')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/FS_FolderADF')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"activities": [
-					{
-						"name": "Get file list",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "any_abs_csv",
-								"type": "DatasetReference",
-								"parameters": {
-									"Container": "sampledata",
-									"Directory": {
-										"value": "@pipeline().parameters.FolderPath",
-										"type": "Expression"
-									},
-									"File": " ",
-									"LinkedServiceConnectionSecret": "connectionStringsa1"
-								}
-							},
-							"fieldList": [
-								"exists",
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Get file list",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get file list').output.childItems",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"activities": [
-								{
-									"name": "Execute Pipeline1",
-									"type": "ExecutePipeline",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "ImportSTFormatFile_Divert",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {
-											"Directory": {
-												"value": "@pipeline().parameters.FolderPath",
-												"type": "Expression"
-											},
-											"File": {
-												"value": "@item().name",
-												"type": "Expression"
-											}
-										}
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"FolderPath": {
-						"type": "string",
-						"defaultValue": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
-					}
+				"linkedServiceName": {
+					"referenceName": "FileServerRFUSTER",
+					"type": "LinkedServiceReference"
 				},
 				"folder": {
-					"name": "Chapter_06"
+					"name": "Chapter_08"
 				},
-				"annotations": []
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "FileServerLocation",
+						"fileName": "SQLAZURE_ADF.sql"
+					}
+				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/ImportSTFormatFile_Divert')]"
-			]
+			"dependsOn": []
 		}
 	]
 }

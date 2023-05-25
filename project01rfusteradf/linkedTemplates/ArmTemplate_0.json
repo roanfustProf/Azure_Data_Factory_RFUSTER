@@ -25,7 +25,23 @@
 		},
 		"AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://project01rfusterkv12.vault.azure.net/"
+			"defaultValue": "https://project01rfusterkv13.vault.azure.net/"
+		},
+		"RestSAdequateshop_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://restapi.adequateshop.com"
+		},
+		"RestServiceAnonymousDummy_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{concat(linkedService().urlService,linkedService().nameService)}"
+		},
+		"RestServiceCountries_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://universities.hipolabs.com/search?country=United+States"
+		},
+		"RestServiceReqresin_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://reqres.in"
 		},
 		"LinkedIntegrationRuntime_properties_typeProperties_linkedInfo_resourceId": {
 			"type": "string",
@@ -41,6 +57,10 @@
 		},
 		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 			"type": "secureString"
+		},
+		"RestServiceCountries2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://restcountries.com/"
 		}
 	},
 	"variables": {
@@ -60,6 +80,76 @@
 					"type": "string",
 					"value": "[parameters('default_properties_ResourceGroupName_value')]"
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/apiRESTtoken')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web User Login",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://restapi.adequateshop.com/api/authaccount/login",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"email": "ronydeveloper@gmail.com",
+								"password": 123456
+							}
+						}
+					},
+					{
+						"name": "Web Get All Users",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Web User Login",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://restapi.adequateshop.com/api/users?page=1",
+							"method": "GET",
+							"headers": {
+								"Authorization": {
+									"value": "Bearer @{activity('Web User Login').output.data.Token}",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "Others"
+				},
+				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -200,6 +290,75 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/RestSAdequateshop')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestSAdequateshop_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestServiceAnonymousDummy')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"parameters": {
+					"urlService": {
+						"type": "string",
+						"defaultValue": "https://dummy.restapiexample.com/api/v1/"
+					},
+					"nameService": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestServiceAnonymousDummy_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestServiceCountries')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestServiceCountries_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestServiceReqresin')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestServiceReqresin_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/FarAwayintegrationRuntime')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -261,6 +420,21 @@
 						"edition": "Standard",
 						"licenseType": "LicenseIncluded"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestServiceCountries2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestServiceCountries2_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -449,404 +623,44 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/abs_csv_SweetTreats')]",
+			"name": "[concat(parameters('factoryName'), '/RestRUsersAdequateshop')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_project01rfusterca",
+					"referenceName": "RestSAdequateshop",
 					"type": "LinkedServiceReference"
 				},
-				"folder": {
-					"name": "Chapter_03"
-				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "RestResource",
 				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Sales.csv",
-						"folderPath": "azure-data-factory-by-example-main.zip/azure-data-factory-by-example-main/SampleData/SweetTreats/Apr-20",
-						"container": "sampledata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "SalesMonth",
-						"type": "String"
-					},
-					{
-						"name": "Retailer",
-						"type": "String"
-					},
-					{
-						"name": "Product",
-						"type": "String"
-					},
-					{
-						"name": "SalesValueUSD",
-						"type": "String"
-					},
-					{
-						"name": "UnitsSold",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_project01rfusterca')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/abs_csv_candyshack')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_project01rfusterca",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Chapter_03"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "2020-04.csv",
-						"folderPath": "azure-data-factory-by-example-main/SampleData/CandyShack",
-						"container": "sampledata"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "Retailer",
-						"type": "String"
-					},
-					{
-						"name": "SkuCode",
-						"type": "String"
-					},
-					{
-						"name": "Product",
-						"type": "String"
-					},
-					{
-						"name": "SalesMonth",
-						"type": "String"
-					},
-					{
-						"name": "SalesValue",
-						"type": "String"
-					},
-					{
-						"name": "UnitsSold",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_project01rfusterca')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/abs_json_handycandy')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_project01rfusterca",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Chapter_03"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "00816cd4-0d98-4505-8b8f-8b3ba08aab31.json",
-						"folderPath": "azure-data-factory-by-example-main/SampleData/HandyCandy",
-						"container": "sampledata"
-					}
-				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"TransactionId": {
-							"type": "string"
-						},
-						"TransactionDate": {
-							"type": "string"
-						},
-						"StoreId": {
-							"type": "string"
-						},
-						"Items": {
-							"type": "array",
-							"items": {
-								"type": "object",
-								"properties": {
-									"Product": {
-										"type": "string"
-									},
-									"Price": {
-										"type": "number"
-									}
-								}
-							}
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_project01rfusterca')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/abs_json_sugarcube')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_project01rfusterca",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Chapter_03"
-				},
-				"annotations": [],
-				"type": "Json",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "April.json",
-						"folderPath": "azure-data-factory-by-example-main/SampleData/SugarCube/2020/Q2",
-						"container": "sampledata"
-					}
-				},
-				"schema": {
-					"type": "object",
-					"properties": {
-						"Month": {
-							"type": "string"
-						},
-						"Company": {
-							"type": "string"
-						},
-						"Sales": {
-							"type": "array",
-							"items": {
-								"type": "object",
-								"properties": {
-									"Product": {
-										"type": "string"
-									},
-									"ManufacturerProductCode": {
-										"type": "string"
-									},
-									"Units": {
-										"type": "integer"
-									},
-									"Value": {
-										"type": "number"
-									}
-								}
-							}
-						}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_project01rfusterca')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/abs_par_handycandy')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_project01rfusterca",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "Chapter_03"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "HandyCandy2.parquet",
-						"folderPath": "datalake",
-						"container": "output"
-					},
-					"compressionCodec": "snappy"
+					"relativeUrl": "/api/users?page=1"
 				},
 				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_project01rfusterca')]"
+				"[concat(variables('factoryId'), '/linkedServices/RestSAdequateshop')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/abs_par_handycandy2')]",
+			"name": "[concat(parameters('factoryName'), '/RestResourceCountries')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_project01rfusterca",
+					"referenceName": "RestServiceCountries",
 					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "HandyCandy2.parquet",
-						"folderPath": "datalake",
-						"container": "output"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "Product",
-						"type": "UTF8"
-					},
-					{
-						"name": "Price",
-						"type": "FLOAT"
-					},
-					{
-						"name": "TransactionId",
-						"type": "UTF8"
-					},
-					{
-						"name": "TransactionDate",
-						"type": "INT96"
-					},
-					{
-						"name": "StoreId",
-						"type": "INT32"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_project01rfusterca')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/any_asql_table')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_project01rfuster",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"Par_table": {
-						"type": "string",
-						"defaultValue": "-1"
-					},
-					"Par_esquema": {
-						"type": "string",
-						"defaultValue": "-1"
-					}
 				},
 				"folder": {
-					"name": "Chapter_07"
+					"name": "Others"
 				},
 				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": {
-						"value": "@dataset().Par_esquema",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().Par_table",
-						"type": "Expression"
-					}
-				}
+				"type": "RestResource",
+				"typeProperties": {},
+				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_project01rfuster')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/asql_dboloadingerror')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase_project01rfuster",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"tableName": {
-						"type": "string",
-						"defaultValue": "LoadingError"
-					},
-					"schemaTableName": {
-						"type": "string",
-						"defaultValue": "dbo"
-					}
-				},
-				"folder": {
-					"name": "Chapter_06"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Timestamp",
-						"type": "datetime2",
-						"scale": 7
-					},
-					{
-						"name": "Level",
-						"type": "nvarchar"
-					},
-					{
-						"name": "OperationName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "OperationItem",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Message",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": {
-						"value": "@dataset().schemaTableName",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().tableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase_project01rfuster')]"
+				"[concat(variables('factoryId'), '/linkedServices/RestServiceCountries')]"
 			]
 		}
 	]

@@ -30,7 +30,7 @@
 		},
 		"AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl": {
 			"type": "string",
-			"defaultValue": "https://project01rfusterkv12.vault.azure.net/"
+			"defaultValue": "https://project01rfusterkv13.vault.azure.net/"
 		},
 		"FileServerRFUSTER_properties_typeProperties_host": {
 			"type": "string",
@@ -40,24 +40,25 @@
 			"type": "string",
 			"defaultValue": "ESAN_1515497@outlook.com"
 		},
+		"RestSAdequateshop_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://restapi.adequateshop.com"
+		},
+		"RestServiceAnonymousDummy_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{concat(linkedService().urlService,linkedService().nameService)}"
+		},
+		"RestServiceCountries_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://universities.hipolabs.com/search?country=United+States"
+		},
+		"RestServiceReqresin_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://reqres.in"
+		},
 		"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "@linkedService().ConnectionSecret"
-		},
-		"LinkedIntegrationRuntime_properties_typeProperties_linkedInfo_resourceId": {
-			"type": "string",
-			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
-		},
-		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
-			"type": "string",
-			"defaultValue": "project01rfustersqldbs.database.windows.net"
-		},
-		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
-			"type": "string",
-			"defaultValue": "rfuster"
-		},
-		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
-			"type": "secureString"
 		},
 		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_WildcardFolderPath": {
 			"type": "string",
@@ -74,6 +75,25 @@
 		"RunEvery2Minutes_properties_ImportSTFormatFolder_parameters_LinkedServiceConnectionSecret": {
 			"type": "string",
 			"defaultValue": "connectionStringsa1"
+		},
+		"LinkedIntegrationRuntime_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/92388c65-7bea-417c-afc3-568a78329c7a/resourcegroups/project01rfuster-rg/providers/Microsoft.DataFactory/factories/project01rfusteradfshare/integrationruntimes/integrationRuntimeOnPromise"
+		},
+		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogServerEndpoint": {
+			"type": "string",
+			"defaultValue": "project01rfustersqldbs.database.windows.net"
+		},
+		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminUserName": {
+			"type": "string",
+			"defaultValue": "rfuster"
+		},
+		"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
+			"type": "secureString"
+		},
+		"RestServiceCountries2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://restcountries.com/"
 		},
 		"default_properties_EnvironmentName_value": {
 			"type": "string",
@@ -125,6 +145,18 @@
 					"AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault_project01rfuster_properties_typeProperties_baseUrl')]"
 					},
+					"RestSAdequateshop_properties_typeProperties_url": {
+						"value": "[parameters('RestSAdequateshop_properties_typeProperties_url')]"
+					},
+					"RestServiceAnonymousDummy_properties_typeProperties_url": {
+						"value": "[parameters('RestServiceAnonymousDummy_properties_typeProperties_url')]"
+					},
+					"RestServiceCountries_properties_typeProperties_url": {
+						"value": "[parameters('RestServiceCountries_properties_typeProperties_url')]"
+					},
+					"RestServiceReqresin_properties_typeProperties_url": {
+						"value": "[parameters('RestServiceReqresin_properties_typeProperties_url')]"
+					},
 					"LinkedIntegrationRuntime_properties_typeProperties_linkedInfo_resourceId": {
 						"value": "[parameters('LinkedIntegrationRuntime_properties_typeProperties_linkedInfo_resourceId')]"
 					},
@@ -136,6 +168,9 @@
 					},
 					"integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword": {
 						"value": "[parameters('integrationRuntimeSSIS_properties_typeProperties_ssisProperties_catalogInfo_catalogAdminPassword')]"
+					},
+					"RestServiceCountries2_properties_typeProperties_url": {
+						"value": "[parameters('RestServiceCountries2_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -155,12 +190,6 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"SqlServerRFUSTERBD_CONTABILIDAD_connectionString": {
-						"value": "[parameters('SqlServerRFUSTERBD_CONTABILIDAD_connectionString')]"
-					},
-					"azureblobstorage_project01rfusterca_fair_connectionString": {
-						"value": "[parameters('azureblobstorage_project01rfusterca_fair_connectionString')]"
-					},
 					"AzureBlobStorage_project01rfuster_kv_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('AzureBlobStorage_project01rfuster_kv_properties_typeProperties_connectionString_secretName')]"
 					},
@@ -169,9 +198,6 @@
 					},
 					"FileServerRFUSTER_properties_typeProperties_userId": {
 						"value": "[parameters('FileServerRFUSTER_properties_typeProperties_userId')]"
-					},
-					"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
@@ -192,6 +218,15 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SqlServerRFUSTERBD_CONTABILIDAD_connectionString": {
+						"value": "[parameters('SqlServerRFUSTERBD_CONTABILIDAD_connectionString')]"
+					},
+					"azureblobstorage_project01rfusterca_fair_connectionString": {
+						"value": "[parameters('azureblobstorage_project01rfusterca_fair_connectionString')]"
+					},
+					"anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('anyblobstorage_project01rfuster_p_properties_typeProperties_connectionString_secretName')]"
 					}
 				}
 			},
@@ -207,6 +242,26 @@
 				"mode": "incremental",
 				"templateLink": {
 					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'project01rfusteradf_ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "project01rfusteradf_ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
@@ -228,7 +283,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'project01rfusteradf_ArmTemplate_2')]"
+				"[resourceId('Microsoft.Resources/deployments', 'project01rfusteradf_ArmTemplate_3')]"
 			]
 		}
 	]
