@@ -1,0 +1,23 @@
+{
+	"name": "RestRrequrestListUsers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestServiceReqresin",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"relativeURL": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@dataset().relativeURL",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	}
+}
