@@ -1,0 +1,15 @@
+{
+	"name": "RestRUsersAdequateshop",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestSAdequateshop",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": "/api/users?page=1"
+		},
+		"schema": []
+	}
+}
