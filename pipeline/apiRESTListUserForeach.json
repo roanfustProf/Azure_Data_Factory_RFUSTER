@@ -18,6 +18,19 @@
 					"url": "https://reqres.in/api/users?page=1",
 					"method": "GET"
 				}
+			},
+			{
+				"name": "ForEach get user by page",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Web list user page 1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
 			}
 		],
 		"folder": {
