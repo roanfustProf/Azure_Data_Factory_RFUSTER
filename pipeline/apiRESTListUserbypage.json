@@ -42,26 +42,41 @@
 							{
 								"source": {
 									"path": "['id']"
+								},
+								"sink": {
+									"name": "id"
 								}
 							},
 							{
 								"source": {
 									"path": "['email']"
+								},
+								"sink": {
+									"name": "email"
 								}
 							},
 							{
 								"source": {
 									"path": "['first_name']"
+								},
+								"sink": {
+									"name": "first_name"
 								}
 							},
 							{
 								"source": {
 									"path": "['last_name']"
+								},
+								"sink": {
+									"name": "last_name"
 								}
 							},
 							{
 								"source": {
 									"path": "['avatar']"
+								},
+								"sink": {
+									"name": "avatar"
 								}
 							}
 						],
@@ -73,14 +88,23 @@
 						"referenceName": "RestRrequrestListUsers",
 						"type": "DatasetReference",
 						"parameters": {
-							"relativeURL": "/api/users?page=1"
+							"relativeURL": {
+								"value": "/api/users?page=@{pipeline().parameters.pageUrlService}",
+								"type": "Expression"
+							}
 						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "abscsvListuserReqresin",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"filenamecsv": {
+								"value": "listuserReqrein@{pipeline().parameters.pageUrlService}.csv",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
