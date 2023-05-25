@@ -35,7 +35,38 @@
 							"fileExtension": ".txt"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "['id']"
+								}
+							},
+							{
+								"source": {
+									"path": "['email']"
+								}
+							},
+							{
+								"source": {
+									"path": "['first_name']"
+								}
+							},
+							{
+								"source": {
+									"path": "['last_name']"
+								}
+							},
+							{
+								"source": {
+									"path": "['avatar']"
+								}
+							}
+						],
+						"collectionReference": "$['data']"
+					}
 				},
 				"inputs": [
 					{
