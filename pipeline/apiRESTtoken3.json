@@ -50,7 +50,7 @@
 						"requestMethod": "GET",
 						"additionalHeaders": {
 							"Authorization": {
-								"value": "Bearer 8a7c07a6-2fb6-4de5-8b57-5b0119ab1251",
+								"value": "Bearer @{activity('Wee get token 2').output.data.Token}",
 								"type": "Expression"
 							}
 						},
@@ -65,7 +65,64 @@
 						"tableOption": "autoCreate",
 						"disableMetricsCollection": false
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "['name']"
+								},
+								"sink": {
+									"name": "name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['email']"
+								},
+								"sink": {
+									"name": "email",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['profilepicture']"
+								},
+								"sink": {
+									"name": "profilepicture"
+								}
+							},
+							{
+								"source": {
+									"path": "['location']"
+								},
+								"sink": {
+									"name": "location"
+								}
+							},
+							{
+								"source": {
+									"path": "['createdat']"
+								},
+								"sink": {
+									"name": "createdat"
+								}
+							}
+						],
+						"collectionReference": "$['data']"
+					}
 				},
 				"inputs": [
 					{
