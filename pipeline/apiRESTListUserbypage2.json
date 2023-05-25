@@ -89,7 +89,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"relativeURL": {
-								"value": "@pipeline().parameters.relativeURLpage",
+								"value": "/api/users?page=@{pipeline().parameters.relativeURLpage}",
 								"type": "Expression"
 							}
 						}
