@@ -67,8 +67,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "abs_csv_SweetTreats",
-						"type": "DatasetReference"
+						"referenceName": "abs_csv_SweetTreats_test",
+						"type": "DatasetReference",
+						"parameters": {
+							"container": "sampledata",
+							"directory": "azure-data-factory-by-example-main/SampleData/SweetTreats/Apr-20",
+							"file": "Sales.csv"
+						}
 					}
 				],
 				"outputs": [
