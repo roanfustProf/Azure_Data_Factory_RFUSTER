@@ -1,0 +1,62 @@
+{
+	"name": "abs_csv_SweetTreats_test",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_project01rfusterca",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "sampledata"
+			},
+			"directory": {
+				"type": "string",
+				"defaultValue": "azure-data-factory-by-example-main/SampleData/SweetTreats/Apr-20"
+			},
+			"file": {
+				"type": "string",
+				"defaultValue": "Sales.csv"
+			}
+		},
+		"folder": {
+			"name": "Chapter_03"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Sales.csv",
+				"folderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats/Apr-20",
+				"container": "sampledata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "SalesMonth",
+				"type": "String"
+			},
+			{
+				"name": "Retailer",
+				"type": "String"
+			},
+			{
+				"name": "Product",
+				"type": "String"
+			},
+			{
+				"name": "SalesValueUSD",
+				"type": "String"
+			},
+			{
+				"name": "UnitsSold",
+				"type": "String"
+			}
+		]
+	}
+}
