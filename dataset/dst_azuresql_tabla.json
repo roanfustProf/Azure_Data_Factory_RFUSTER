@@ -1,0 +1,31 @@
+{
+	"name": "dst_azuresql_tabla",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lks_azure_sqldatabase2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"schema_tabla": {
+				"type": "string"
+			},
+			"nombre_tabla": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().schema_tabla",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().nombre_tabla",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

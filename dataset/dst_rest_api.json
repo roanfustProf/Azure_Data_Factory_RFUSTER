@@ -1,0 +1,27 @@
+{
+	"name": "dst_rest_api",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lns_rest_api",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"url_base": "https://restcountries.com/v3.1/"
+			}
+		},
+		"parameters": {
+			"ruta_servicio": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@dataset().ruta_servicio",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,72 @@
+{
+	"name": "pip_copiar_datos",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": false,
+							"wildcardFileName": "azure-data-factory-by-example-main.zip",
+							"deleteFilesAfterCompletion": false
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings",
+							"compressionProperties": {
+								"type": "ZipDeflateReadSettings",
+								"preserveZipFileNameAsFolder": false
+							}
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "dst_archivo_comprimido",
+						"type": "DatasetReference",
+						"parameters": {
+							"nombre_contenedor": "landing",
+							"ruta_carpeta": {
+								"value": "@string('')",
+								"type": "Expression"
+							},
+							"nombre_archivo": "azure-data-factory-by-example-main.zip"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dst_carpeta_destino",
+						"type": "DatasetReference",
+						"parameters": {
+							"nombre_contenedor": "data",
+							"ruta_carpeta": "@string('')"
+						}
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-08-08T04:15:37Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

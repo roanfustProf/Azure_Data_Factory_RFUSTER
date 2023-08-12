@@ -1,0 +1,138 @@
+{
+	"name": "plp_copiar_datos_api_rest_america",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['name']['official']"
+								},
+								"sink": {
+									"name": "name_official",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['cca2']"
+								},
+								"sink": {
+									"name": "cca2",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ccn3']"
+								},
+								"sink": {
+									"name": "ccn3",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['capital'][0]"
+								},
+								"sink": {
+									"name": "capital'][",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['region']"
+								},
+								"sink": {
+									"name": "region",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['subregion']"
+								},
+								"sink": {
+									"name": "subregion",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['area']"
+								},
+								"sink": {
+									"name": "area",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['population']"
+								},
+								"sink": {
+									"name": "population",
+									"type": "Int32"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "dst_rest_api",
+						"type": "DatasetReference",
+						"parameters": {
+							"ruta_servicio": "region/america"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dst_azuresql_tabla",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema_tabla": "dbo",
+							"nombre_tabla": "api_rest_all_america"
+						}
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-08-08T05:33:47Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

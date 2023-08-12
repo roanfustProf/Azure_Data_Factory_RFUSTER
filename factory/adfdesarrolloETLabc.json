@@ -1,0 +1,9 @@
+{
+	"name": "adfdesarrolloETLabc",
+	"location": "brazilsouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "088d5243-405d-480b-9021-88d4fe8773d5",
+		"tenantId": "8cc9b063-d75c-433d-80d0-912c7c002e0b"
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"name": "lns_rest_api",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "Linked services general para conectarse a cualquier servicio o api rest",
+		"parameters": {
+			"url_base": {
+				"type": "string",
+				"defaultValue": "https://restcountries.com/v3.1/"
+			}
+		},
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "@{linkedService().url_base}",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}

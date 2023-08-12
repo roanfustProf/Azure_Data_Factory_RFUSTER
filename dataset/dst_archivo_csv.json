@@ -1,0 +1,45 @@
+{
+	"name": "dst_archivo_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "cuentaalmacenamiento",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"contenedor": {
+				"type": "string"
+			},
+			"ruta_carpeta": {
+				"type": "string"
+			},
+			"nombre_archivo": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().nombre_archivo",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().ruta_carpeta",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().contenedor",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

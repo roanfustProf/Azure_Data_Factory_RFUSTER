@@ -1,0 +1,34 @@
+{
+	"name": "dst_carpeta_destino",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "cuentaalmacenamiento",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"nombre_contenedor": {
+				"type": "string",
+				"defaultValue": "landing"
+			},
+			"ruta_carpeta": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": {
+					"value": "@dataset().ruta_carpeta",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().nombre_contenedor",
+					"type": "Expression"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,32 @@
+{
+	"name": "dst_archivo_comprimido",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "cuentaalmacenamiento",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"nombre_contenedor": {
+				"type": "string"
+			},
+			"ruta_carpeta": {
+				"type": "string"
+			},
+			"nombre_archivo": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "landing"
+			},
+			"compression": {
+				"type": "ZipDeflate"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
