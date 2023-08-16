@@ -16,10 +16,10 @@
 					"parameters": {
 						"container": "sampledata",
 						"directory": {
-							"value": "azure-data-factory-by-example-main/SampleData/SweetTreats",
+							"value": "azure-data-factory-by-example-main/SampleData/SweetTreats/Apr-20",
 							"type": "Expression"
 						},
-						"file_name": "*.csv"
+						"file_name": "Sales.csv"
 					}
 				}
 			}
