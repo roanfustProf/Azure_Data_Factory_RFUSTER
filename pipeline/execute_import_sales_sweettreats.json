@@ -12,7 +12,15 @@
 						"referenceName": "ImportSweetTreatsSales_Audit_test",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"container": "sampledata",
+						"directory": {
+							"value": "azure-data-factory-by-example-main/SampleData/SweetTreats",
+							"type": "Expression"
+						},
+						"file_name": "*.csv"
+					}
 				}
 			}
 		],
