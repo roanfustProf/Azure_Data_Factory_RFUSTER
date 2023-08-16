@@ -1,0 +1,24 @@
+{
+	"name": "RunEvery4Minutes",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "execute_import_sales_sweettreats",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 5,
+				"startTime": "2023-08-15T22:35:00",
+				"timeZone": "SA Pacific Standard Time"
+			}
+		}
+	}
+}
