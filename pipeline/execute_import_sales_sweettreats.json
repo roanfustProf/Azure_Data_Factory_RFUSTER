@@ -1,0 +1,24 @@
+{
+	"name": "execute_import_sales_sweettreats",
+	"properties": {
+		"activities": [
+			{
+				"name": "import_sales_sweettreats",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "ImportSweetTreatsSales_Audit_test",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Chapter_04"
+		},
+		"annotations": []
+	}
+}

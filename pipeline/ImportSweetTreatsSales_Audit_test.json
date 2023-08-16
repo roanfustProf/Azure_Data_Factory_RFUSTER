@@ -223,6 +223,17 @@
 				}
 			}
 		],
+		"parameters": {
+			"container": {
+				"type": "string"
+			},
+			"directory": {
+				"type": "string"
+			},
+			"file_name": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"RunSeqNo": {
 				"type": "String",
