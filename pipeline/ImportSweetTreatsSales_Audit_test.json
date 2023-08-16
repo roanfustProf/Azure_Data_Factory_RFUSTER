@@ -40,7 +40,10 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFileName": "*.csv",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.file_name",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -69,8 +72,14 @@
 						"referenceName": "abs_csv_SweetTreats_test",
 						"type": "DatasetReference",
 						"parameters": {
-							"container": "sampledata",
-							"directory": "azure-data-factory-by-example-main/SampleData/SweetTreats",
+							"container": {
+								"value": "@pipeline().parameters.container",
+								"type": "Expression"
+							},
+							"directory": {
+								"value": "@pipeline().parameters.directory",
+								"type": "Expression"
+							},
 							"file": "*.csv"
 						}
 					}
