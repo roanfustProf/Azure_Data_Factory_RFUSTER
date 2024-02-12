@@ -1,0 +1,9 @@
+{
+	"name": "adfrfustertest",
+	"location": "brazilsouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "a81a2554-d307-4368-8049-66b19ddc3f90",
+		"tenantId": "d305944c-1191-4f11-9dfa-46441ece1655"
+	}
+}
